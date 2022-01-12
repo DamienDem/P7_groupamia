@@ -12,6 +12,9 @@ const sequelize = new Sequelize('groupamia', 'root', '', {
     logging: false
   })
     
+sequelize.authenticate()
+.then(_=>console.log('La connexion à la BDD a bien été établie.'))
+.catch(error => console.error(`Impossible de se connecter à la BDD ${error}`))
 
 app.get('/', (req,res) => res.send('Hello express !'))
 
