@@ -1,0 +1,17 @@
+{
+  "name": "groupamia-mvp",
+  "version": "1.0.0",
+  "description": "P7 Openclassrooms",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "Damien",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
