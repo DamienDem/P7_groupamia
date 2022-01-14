@@ -9,9 +9,13 @@
   "author": "Damien",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.2",
+    "mariadb": "^2.5.5",
+    "sequelize": "^6.13.0"
   },
   "devDependencies": {
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
   }
 }
