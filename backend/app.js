@@ -50,6 +50,15 @@ app.post('/login', (req, res) => {
   })
 })
 
+app.delete('/user/:id', (req,res) => {
+  User.findByPk(req.params.id)
+  .then(user => {
+    User.destroy({ where: {id:user.id} })
+    const message = `L'utilisateur ${user.userName} a bien été supprimé .`
+    res.json({message, data: user})
+  })
+})
+
 app.get('/', (req,res) => res.send('Hello express !'))
 
 
