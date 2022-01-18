@@ -1,6 +1,7 @@
 const express = require('express');
 const { User } = require('../db/sequelize');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.signup = (req,res) => {
   bcrypt.hash(req.body.password, 10)
@@ -26,8 +27,20 @@ exports.login = (req, res) => {
       const message = `L'utilisateur demandé n'existe pas.`
       return res.status(404).json({ message })
     }
-    const message = `L'utilisateur a été connecté avec succès`;
-    return res.json({ message, data: user })
+    bcrypt.compare(req.body.password, user.password)
+    .then(valid => {
+      if(!valid) {
+        const message = 'Mot de passe est incorrect ! '
+        return res.status(401).json({ message })
+      }
+      const token = jwt.sign(
+        { userId: user._id },
+        'TOKEN_KEY',
+        { expiresIn: '24h' }
+      )
+      const message = `L'utilisateur a été connecté avec succès`;
+      return res.json({ message, data: user, token })
+    })
   })
 };
 
