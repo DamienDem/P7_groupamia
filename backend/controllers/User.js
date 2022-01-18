@@ -1,16 +1,26 @@
 const express = require('express');
 const { User } = require('../db/sequelize');
+const bcrypt = require('bcrypt');
 
 exports.signup = (req,res) => {
-  User.create(req.body)
-  .then(user => {
-    const message = `L'utilisateur ${req.body.userName} a bien été créé .`
-    res.json({message, data: user})
+  bcrypt.hash(req.body.password, 10)
+  .then(hash => {
+    let newUser = User.create({
+        userName: req.body.userName,
+        email: req.body.email,
+        password: hash,
+        description: req.body.description,
+        picture: req.body.picture,
+        isAdmin: false
+    })
   })
-}
+  .then((newUser) => { 
+    const message = `L'utilisateur ${req.body.userName} a bien été créé .`
+    res.json({message, data: newUser})
+  })
+};
 
 exports.login = (req, res) => {
-
   User.findOne({ where: { email: req.body.email } }).then(user => {
     if(!user) {
       const message = `L'utilisateur demandé n'existe pas.`
