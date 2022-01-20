@@ -10,8 +10,8 @@ exports.signup = (req,res) => {
         userName: req.body.userName,
         email: req.body.email,
         password: hash,
-        description: req.body.description,
-        picture: req.body.picture,
+        description: 'Ma description',
+        picture: 'Mon Url',
         isAdmin: false
     })
   })
@@ -44,6 +44,22 @@ exports.login = (req, res) => {
   })
 };
 
+exports.updateProfil = (req, res) => {
+  User.update(req.body, {
+    where: { id: req.params.id }
+  })
+  .then(_ => {
+    return User.findByPk(req.params.id).then(user => {
+      if(user === null) {
+        const message = "L'utilisateur demandé n'existe pas ."
+        return res.status(404).json({ message })
+      }
+      const message = `L'utilisateur ${user.userName} a bien été modifié`
+      res.json({ message, data: user})
+    })  
+  })
+}
+
 exports.deleteUser = (req,res) => {
   User.findByPk(req.params.id)
   .then(user => {
@@ -51,5 +67,4 @@ exports.deleteUser = (req,res) => {
     const message = `L'utilisateur ${user.userName} a bien été supprimé .`
     res.json({message, data: user})
   })
-
 };
