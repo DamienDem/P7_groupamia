@@ -30,8 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    timestamps: true,
-    createdAt: 'created',
-    updatedAt: false
-  })
+    classMethods: {
+      associate: function(models) {
+        models.User.hasMany(models.Post);
+      }
+    }
+  });
 }
