@@ -42,6 +42,40 @@ exports.getAllPosts = (req,res) => {
   })
 }
        
-        
-          
+exports.getOnePost = (req,res) => {
+  Post.findByPk(req.params.id)
+  .then( post => {
+    if(post === null) {
+      const message = `La publication demandé n'existe pas .`
+      return res.status(404).json({ message })
+    }
+    const message = `La publication a bien été trouvée .`
+    res.json({ message , data: post})
+  })
+  .catch(error => {
+    const message = `La publication n'a pas pu être récupéré. Réessayez dans quelques instants.`
+    res.status(500).json({ message, data: error })
+  })
+}  
+     
+exports.updatePost = (req,res) => {
+  Post.findByPk(req.params.id)
+  .then ( post => {
+    if(post === null) {
+      const message = `La publication demandé n'existe pas .`
+      return res.status(404).json({ message })
+    }
+  })
+  .then( post => {
+    Post.update(req.body, {
+      where: {id: req.params.id }
+    })
+    const message = `La publication :"${req.body.title}" a bien été modifié.`
+    res.json({message, data: post })
+  })
+  .catch(error => {
+    const message = `La publication n'a pas pu être modifié. Réessayez dans quelques instants.`
+    res.status(500).json({ message, data: error })
+  })
+}
  
