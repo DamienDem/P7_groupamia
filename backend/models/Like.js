@@ -10,7 +10,7 @@ module.exports = (sequelize ,DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: 'Post',
+          model: 'Posts',
           key: 'id'
         }
       },
@@ -18,7 +18,7 @@ module.exports = (sequelize ,DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: 'User',
+          model: 'Users',
           key: 'id'
         }
       },
@@ -52,10 +52,8 @@ module.exports = (sequelize ,DataTypes) => {
                 models.Like.belongsTo(models.Post, {
                   foreignKey: 'postId',
                   as: 'post',
-                });
-                
+                });   
               }
           }
-
       }
 )}
