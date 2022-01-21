@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const UserModel = require('../models/User');
+const PostModel = require('../models/Post')
 
 const sequelize = new Sequelize('groupamia', 'root', '', {
     host: 'localhost',
@@ -18,7 +19,8 @@ const sequelize = new Sequelize('groupamia', 'root', '', {
 .then(_=> console.log('la BDD a bien été synchronisée'));
 
 const User = UserModel(sequelize, DataTypes);
+const Post = PostModel(sequelize, DataTypes);
 
 module.exports = { 
-    initDb, User
+    initDb, User, Post
 }

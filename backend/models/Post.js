@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'Users',
           key: 'id'
@@ -21,22 +21,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      password: {
+      attachement: {
         type:DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: false
-      }, 
-      picture: {
-        type: DataTypes.STRING,
-        allowNull: false
+      like: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       },
-      isAdmin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
-      }
     }, {
       timestamps: true,
       createdAt: 'created',
