@@ -78,4 +78,25 @@ exports.updatePost = (req,res) => {
     res.status(500).json({ message, data: error })
   })
 }
- 
+
+exports.deletePost = (req, res) => {
+  Post.findByPk(req.params.id)
+  .then ( post => {
+    if(post === null) {
+      const message = `La publication demandé n'existe pas .`
+      return res.status(404).json({ message })
+    }
+  })
+  .then( post => {
+  
+    Post.destroy({
+      where: {id: req.params.id }
+    })
+    const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`
+    res.json({ message })
+  })
+  .catch(error => {
+    const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`
+    res.status(500).json({ message, data: error })
+  })
+}
