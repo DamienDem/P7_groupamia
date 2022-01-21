@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false
     },{
         classMethods: {
-          associate: function(models) {
+          associate: (models) => {
             models.Post.belongsTo(models.User, {
               foreignKey: {
                 allowNull: false
