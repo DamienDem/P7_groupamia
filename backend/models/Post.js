@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
+      dislikes: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      }
     }, {
       timestamps: true,
       createdAt: 'created',
