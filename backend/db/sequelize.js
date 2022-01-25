@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const UserModel = require('../models/User');
 const PostModel = require('../models/Post');
 const LikeModel = require ('../models/Like');
+const CommentModel = require('../models/Comment');
 
 const sequelize = new Sequelize('groupamia', 'root', '', {
     host: 'localhost',
@@ -22,7 +23,8 @@ const sequelize = new Sequelize('groupamia', 'root', '', {
 const User = UserModel(sequelize, DataTypes);
 const Post = PostModel(sequelize, DataTypes);
 const Like = LikeModel(sequelize, DataTypes);
+const Comment = CommentModel(sequelize, DataTypes);
 
 module.exports = { 
-    initDb, User, Post, Like
+    initDb, User, Post, Like, Comment
 }
