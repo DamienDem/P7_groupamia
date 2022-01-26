@@ -7,7 +7,7 @@ exports.createPost = (req, res) => {
     const content = req.body.content;
 
     if (title == null || content == null) {
-      const message = `Paramétre manaquant . `
+      const message = `Paramétre manquant . `
       return res.status(404).json({ message });
     }
         User.findOne({
@@ -16,7 +16,7 @@ exports.createPost = (req, res) => {
         .then(user => {
             if(!user){
                 const message = `L'utilisateur n'existe pas`
-                res.status(404).json({ message })
+                return res.status(404).json({ message })
             }
             Post.create({
               userId : req.params.id,
@@ -26,6 +26,10 @@ exports.createPost = (req, res) => {
             })  
             const message = `La publication est postée`;
             return res.json({ message, data: user, })
+        })
+        .catch(err => {
+          const message = `Impossible de créer la publication, veuillez réessayer ultérieurement .`
+          res.status(500).json({ message, err })
         })
       };
 
