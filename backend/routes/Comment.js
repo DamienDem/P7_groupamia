@@ -3,11 +3,11 @@ const router = express.Router();
 const commentCtrl = require('../controllers/Comment');
 
 
-router.post('/:postId/addComment', commentCtrl.createComment);
-router.post('/:id/updateComment', commentCtrl.updateComment);
-router.delete('/:id/:userId/deleteComment', commentCtrl.deleteComment);
+router.post('/addComment/:postId', commentCtrl.createComment);
+router.post('/updateComment/:id', commentCtrl.updateComment);
+router.delete('/deleteComment/:id/:userId', commentCtrl.deleteComment);
 router.get('/', commentCtrl.getAllComments);
-router.get('/:id', commentCtrl.getOneComment);
+router.get('/comment/:id', commentCtrl.getOneComment);
 
 
 module.exports = router;

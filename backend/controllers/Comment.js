@@ -34,7 +34,14 @@ exports.createComment = (req, res) => {
             return res.status(404).json({ message });
           }
         });
+      } else {
+        const message = `L'utilisateur est introuvable`
+        res.status(400).json({ message })
       }
+    })
+    .catch((err) => {
+      const message = 'Erreur serveur, veuillez réessayer dans un instant'
+      res.status(500).hson({ message })
     });
   }
 };
@@ -91,4 +98,22 @@ exports.deleteComment = (req,res) => {
         const message = `Le commentaire n'a pas pu être récupéré. Réessayez dans quelques instants.`
         res.status(500).json({ message, data: error })
         })
+}
+
+exports.getAllComments = (req,res) => {
+  
+};
+
+exports.getOneComment = (req,res) => {
+  Post.findOne({
+    where: { id: req.params.id}
+  })
+  .then(comment => {
+    if(comment === null ){
+      const message =  `Le commentaire n'existe pas `
+      return res.status(400).json({ message })
+    }
+    const message = `Le commentaire a bien été trouvé `
+    res.json({ message, data : comment })
+  })
 }
