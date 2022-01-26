@@ -2,6 +2,7 @@ const express = require('express');
 const { User } = require('../db/sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 exports.signup = (req,res) => {
   User.findOne({ where: { email: req.body.email } })
@@ -60,6 +61,7 @@ exports.login = (req, res) => {
 };
 
 exports.updateProfil = (req, res) => {
+  
   User.update(req.body, {
     where: { id: req.params.id }
   })
