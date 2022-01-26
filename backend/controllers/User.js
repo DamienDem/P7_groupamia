@@ -4,20 +4,31 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.signup = (req,res) => {
-  bcrypt.hash(req.body.password, 10)
-  .then(hash => {
-    let newUser = User.create({
-        userName: req.body.userName,
-        email: req.body.email,
-        password: hash,
-        description: 'Ma description',
-        picture: 'Mon Url',
-        isAdmin: false
-    })
-  })
-  .then((newUser) => { 
-    const message = `L'utilisateur ${req.body.userName} a bien été créé .`
-    res.json({message, data: newUser})
+  User.findOne({ where: { email: req.body.email } })
+  .then(user => {
+    if(!user) {
+      bcrypt.hash(req.body.password, 10)
+      .then(hash => {
+        let newUser = User.create({
+            name: req.body.name,
+            firstName:req.body.firstName,
+            email: req.body.email,
+            password: hash,
+            isAdmin: false
+        })
+      })
+      .then((newUser) => { 
+        const message = `L'utilisateur ${req.body.name} ${req.body.firstName} a bien été créé .`
+        res.json({message, data: newUser})
+      })
+      .catch((err => {
+        const message = `impossible de créer l'utilisateur:"${req.body.name} ${req.body.firstName}" `
+        res.status(400).json({ message, err})
+      }))
+    } else {
+      const message = `L'utilisateur avec l'email:"${req.body.email}" existe déja. `
+      return res.status(400).json({ message})
+    }
   })
 };
 
@@ -41,6 +52,10 @@ exports.login = (req, res) => {
       const message = `L'utilisateur a été connecté avec succès`;
       return res.json({ message, data: user, token })
     })
+    .catch(err => {
+      const message = `Impossible de se connecter, veuillez réessayer ultérieurement. `
+      res.status(500).json({message ,err})
+    })
   })
 };
 
@@ -56,7 +71,11 @@ exports.updateProfil = (req, res) => {
       }
       const message = `L'utilisateur ${user.userName} a bien été modifié`
       res.json({ message, data: user})
-    })  
+    }) 
+    .catch(err => {
+      const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `
+      res.status(500).json({message ,err})
+    }) 
   })
 }
 
@@ -66,5 +85,9 @@ exports.deleteUser = (req,res) => {
     User.destroy({ where: {id:user.id} })
     const message = `L'utilisateur ${user.userName} a bien été supprimé .`
     res.json({message, data: user})
+  })
+  .catch(err => {
+    const message = `Impossible de supprimer le profil, veuillez réessayer ultérieurement. `
+    res.status(500).json({message ,err})
   })
 };

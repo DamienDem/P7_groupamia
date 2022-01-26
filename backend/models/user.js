@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    userName: {
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    name: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -19,11 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     }, 
     picture: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
