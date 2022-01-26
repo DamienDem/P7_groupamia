@@ -101,7 +101,17 @@ exports.deleteComment = (req,res) => {
 }
 
 exports.getAllComments = (req,res) => {
-  
+  Comment.findAll({
+    where: { postId: req.params.id }
+  })
+  .then(comments => {
+    const message = `la liste des commentaires a bien été récupérée . `
+    res.json({ message, data : comments })
+  })
+  .catch(err => {
+    const message = `La liste des commentaires n'a pas pu être récupérée. Réessayer dans quelques instants.`
+    res.status(500).json({message, data: err})
+})
 };
 
 exports.getOneComment = (req,res) => {
