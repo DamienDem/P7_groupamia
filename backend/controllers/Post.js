@@ -88,7 +88,6 @@ exports.deletePost = (req, res) => {
     }
   })
   .then( post => {
-  
     Post.destroy({
       where: {id: req.params.id }
     })

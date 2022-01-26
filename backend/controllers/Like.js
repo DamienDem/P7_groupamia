@@ -1,5 +1,5 @@
 const express = require("express");
-const { Post, User, Like } = require("../db/sequelize");
+const { Post, Like } = require("../db/sequelize");
 
 exports.likePost = (req,res) => {
   let postId = parseInt(req.params.postId);
