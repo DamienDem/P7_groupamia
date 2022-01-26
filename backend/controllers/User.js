@@ -45,8 +45,8 @@ exports.login = (req, res) => {
         return res.status(401).json({ message })
       }
       const token = jwt.sign(
-        { userId: user._id },
-        'TOKEN_KEY',
+        { userId: user.id },
+        `Mon_token_secret`,
         { expiresIn: '24h' }
       )
       const message = `L'utilisateur a été connecté avec succès`;
