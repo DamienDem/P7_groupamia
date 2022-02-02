@@ -15,6 +15,7 @@ exports.signup = (req,res) => {
             firstName:req.body.firstName,
             email: req.body.email,
             password: hash,
+            picture: `http://localhost:3000/images/default_profil_picture`,
             isAdmin: false
         })
       })
@@ -60,8 +61,34 @@ exports.login = (req, res) => {
   })
 };
 
+exports.getAllUsers = (req,res) => {
+  User.findAll()
+  .then(users => {
+    const message = `la liste des utilisateurs a bien été récupérée . `
+    res.json({ message, data : users })
+  })
+  .catch(err => {
+    const message = `La liste des utilisateurs n'a pas pu être récupérée. Réessayer dans quelques instants.`
+    res.status(500).json({message, data: err})
+})
+};
+
+exports.getOneUser = (req,res) => {
+  User.findOne({
+    where: { id: req.params.id}
+  })
+  .then(user => {
+    if(user === null ){
+      const message =  `L'utilisateur n'existe pas `
+      return res.status(400).json({ message })
+    }
+    const message = `L'utilisateur a bien été trouvé `
+    res.json({ message, data : user })
+  })
+};
+
 exports.updateProfil = (req, res) => {
-  
+
   User.update(req.body, {
     where: { id: req.params.id }
   })
