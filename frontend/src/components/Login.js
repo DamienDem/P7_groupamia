@@ -1,11 +1,56 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-const login = () => {
-    return(
-        <div >
-            Se connecter
-        </div>
-    )
-}
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-export default login;
+  const handleLogin = (e) => {
+      e.preventDefault();
+      const emailError = document.querySelector('.email.error');
+      const passwordError = document.querySelector('.password.error');
+
+      axios({
+          method:"post",
+          url: 'http://localhost:3000/login',
+          withCredentials: true,
+          data : {
+              email,
+              password
+          }
+      })
+      .then((res) => {
+        if(res.data.errors) {
+            emailError.innerHTML = res.data.errors.email;
+            passwordError.innerHTML=res.data.errors.password
+        } else {
+            window.location = "/";
+        }
+      })
+      .catch((err) => {
+          console.log(err);
+      })
+  };
+
+  return (
+    <form action="" onSubmit={handleLogin} id="sign-up-form">
+      <label htmlFor="email">Email</label>
+      <input
+        type="text"
+        name="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <label htmlFor="password"> Mot de passe</label>
+      <input
+        name="password"
+        className="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <input type="submit" value="Se Connecter" />
+    </form>
+  );
+};
+
+export default Login;

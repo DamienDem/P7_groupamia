@@ -88,24 +88,23 @@ exports.getOneUser = (req,res) => {
 };
 
 exports.updateProfil = (req, res) => {
+  const userObject = req.file ?
+    {
+      ...JSON.parse(req.body.user),
+      picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : { ...req.body };
 
-  User.update(req.body, {
+  User.update(userObject,{
     where: { id: req.params.id }
   })
-  .then(_ => {
-    return User.findByPk(req.params.id).then(user => {
-      if(user === null) {
-        const message = "L'utilisateur demandé n'existe pas ."
-        return res.status(404).json({ message })
-      }
-      const message = `L'utilisateur ${user.userName} a bien été modifié`
-      res.json({ message, data: user})
+  .then(userModify => {
+      const message = `L'utilisateur ${userModify} a bien été modifié`
+      res.json({ message, data: userModify})
     }) 
     .catch(err => {
       const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `
       res.status(500).json({message ,err})
     }) 
-  })
 }
 
 exports.deleteUser = (req,res) => {

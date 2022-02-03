@@ -11,8 +11,8 @@ const app = express();
 
 app
 .use(express.json())
-.use(morgan('dev'))
 .use('/images', express.static(path.join(__dirname, 'images')))
+.use(morgan('dev'))
 .use('/', userRoutes)
 .use('/', postRoutes)
 .use('/', likeRoutes)

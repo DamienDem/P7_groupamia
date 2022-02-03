@@ -22,7 +22,7 @@ exports.createPost = (req, res) => {
               userId : req.params.id,
               title  : title,
               content: content,
-              like  : 0
+              likes  : 0
             })  
             const message = `La publication est postée`;
             return res.json({ message, data: user, })
