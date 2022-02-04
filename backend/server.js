@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('./app');
-
+const cors = require('cors');
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -36,6 +36,7 @@ const errorHandler = error => {
 };
 
 const server = http.createServer(app);
+
 
 server.on('error', errorHandler);
 server.on('listening', () => {

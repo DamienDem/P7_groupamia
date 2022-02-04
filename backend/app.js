@@ -1,13 +1,16 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-
 const userRoutes = require('./routes/User');
 const postRoutes = require('./routes/Post');
 const likeRoutes = require('./routes/Like');
 const commentRoutes = require('./routes/Comment');
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors());
+
 
 app
 .use(express.json())
