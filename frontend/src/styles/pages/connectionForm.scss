@@ -6,6 +6,9 @@
   border-radius: 15px;
   padding: 10px;
   width: 250px;
+  input[type="submit"]{
+    cursor: pointer;
+  }
 }
 
 .connection-form {
