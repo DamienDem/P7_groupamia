@@ -20,7 +20,7 @@ const Auth = () => {
     return(
         <div className="connection-form">
             <div className="form-container">
-                <ul>
+                <ul className="form-container--list">
                     <li onClick={connectionChoice} id='signUp'> S'inscrire </li>
                     <li onClick={connectionChoice} id="signIn"> Se connecter </li>
                 </ul>

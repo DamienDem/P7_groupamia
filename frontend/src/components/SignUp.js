@@ -91,7 +91,7 @@ const SignUp = () => {
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
       <div className="confirmPassword error"></div>
-      <input type="submit" value="S'inscrire'" />
+      <input type="submit" value="S'inscrire" />
     </form>
   );
 };
