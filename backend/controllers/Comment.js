@@ -67,41 +67,49 @@ exports.updateComment = (req, res) => {
         const message = `La publication demandé n'existe pas .`;
         return res.status(404).json({ message });
       }
-    
+
       const filename = comment.attachement.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
-      Comment.update(commentObject, {
-        where: { id: req.params.id },
+        Comment.update(commentObject, {
+          where: { id: req.params.id },
+        });
+        const message = `La publication a bien été modifié.`;
+        res.json({ message, data: commentObject });
       });
-      const message = `La publication a bien été modifié.`;
-      res.json({ message, data: commentObject });
     })
-  })
     .catch((error) => {
       const message = `La publication n'a pas pu être modifié. Réessayez dans quelques instants.`;
       res.status(500).json({ message, data: error });
-    })
-
+    });
 };
 
 exports.deleteComment = (req, res) => {
   const userId = req.params.userId;
-  Comment.findByPk(req.params.id)
-    .then((comment) => {
-      if (comment === null) {
-        const message = `Le commentaire demandé n'existe pas`;
+
+  User.findOne({
+    where: { id: userId },
+  })
+    .then((user) => {
+      if (!user) {
+        const message = `L'utilisateur est introuvable`;
         return res.status(400).json({ message });
       }
-      User.findOne({
-        where: { id: userId },
-      }).then((user) => {
-        if (userId == comment.userId || user.isAdmin) {
-          const commentDeleted = comment;
-          return Comment.destroy({
-            where: { id: comment.id },
-          }).then((_) => {
-            const message = `Le commentaire avec l'ID n°${commentDeleted.id} a bien été supprimé .`;
-            res.json({ message, data: commentDeleted });
+      const admin = user.isAdmin;
+      Comment.findByPk(req.params.id).then((comment) => {
+        if (!comment) {
+          const message = `Le commentaire demandé n'existe pas`;
+          return res.status(400).json({ message });
+        }
+        if (userId == comment.userId || admin) {
+          const filename = comment.attachement.split("/images/")[1];
+          fs.unlink(`images/${filename}`, () => {
+            const commentDeleted = comment;
+            return Comment.destroy({
+              where: { id: comment.id },
+            }).then((_) => {
+              const message = `Le commentaire avec l'ID n°${commentDeleted.id} a bien été supprimé .`;
+              res.json({ message, data: commentDeleted });
+            });
           });
         } else {
           const message = `Vous n'avez pas les droits pour supprimer ce commentaire .`;
