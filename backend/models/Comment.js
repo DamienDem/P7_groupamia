@@ -22,15 +22,11 @@ module.exports = (sequelize, DataTypes) => {
               key: 'id'
             }
           },
-          userName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-          },
           content: {
-            allowNull: false,
+            allowNull: true,
             type: DataTypes.STRING
           },
-          attachment: {
+          attachement: {
             allowNull: true,
             type: DataTypes.STRING
           }

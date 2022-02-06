@@ -5,6 +5,14 @@ const fs = require("fs");
 exports.createPost = (req, res) => {
   const title = req.body.title;
   const content = req.body.content;
+  const imageURL = req.file
+  ? {
+      attachement: `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`,
+    }
+  : { attachement: null };
+
 
   if (title == null || content == null) {
     const message = `Paramétre manquant . `;
@@ -22,9 +30,7 @@ exports.createPost = (req, res) => {
         userId: req.params.id,
         title: title,
         content: content,
-        attachement: `${req.protocol}://${req.get("host")}/images/${
-          req.file.filename
-        }`,
+        imageURL,
         likes: 0,
       });
       const message = `La publication est postée`;
@@ -103,22 +109,33 @@ exports.updatePost = (req, res) => {
 };
 
 exports.deletePost = (req, res) => {
-  Post.findByPk(req.params.id)
-    .then((post) => {
-      if (post === null) {
-        const message = `La publication demandé n'existe pas .`;
-        return res.status(404).json({ message });
-      }
+  User.findByPk(req.body.userId)
+  .then(user => {
+    if (!user) {
+      const message = "L'utilisateur demandé n'existe pas .";
+      return res.status(404).json({ message });
+    } else {
+      Post.findByPk(req.params.id)
+        .then((post) => {
+          if (post === null) {
+            const message = `La publication demandé n'existe pas .`;
+            return res.status(404).json({ message });
+          }
+        })
+        const filename = user.picture.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+          Post.destroy({
+            where: { id: req.params.id },
+          })
+          .then(_ => {
+            const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
+            res.json({ message });  
+          })
+        .catch((error) => {
+          const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
+          res.status(500).json({ message, data: error });
+        });
     })
-    .then((post) => {
-      Post.destroy({
-        where: { id: req.params.id },
-      });
-      const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
-      res.json({ message });
-    })
-    .catch((error) => {
-      const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
-      res.status(500).json({ message, data: error });
-    });
+  }
+})
 };
