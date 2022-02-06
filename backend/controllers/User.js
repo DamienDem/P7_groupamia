@@ -88,41 +88,48 @@ exports.getOneUser = (req, res) => {
 exports.updateProfil = (req, res) => {
   const userObject = req.file
     ? {
-        ...JSON.parse(req.body.user),
+        ...req.body,
         picture: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
       }
     : { ...req.body };
 
-  User.findByPk(req.params.id)
-    .then((user) => {
-      if (user === null) {
-        const message = "L'utilisateur demandé n'existe pas .";
-        return res.status(404).json({ message });
-      }
-      const message = `L'utilisateur ${user.name} ${user.firstName} a bien été modifié`;
-      res.json({ message, data: user });
-    })
-    .then((_) => {
-      User.update(userObject,{
-        where: { id: req.params.id },
-      }).catch((err) => {
-        const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
-        res.status(500).json({ message, err });
+  User.findByPk(req.params.id).then((user) => {
+    if (!user) {
+      const message = "L'utilisateur demandé n'existe pas .";
+      return res.status(404).json({ message });
+    } else {
+      const filename = user.picture.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+        user
+          .update(userObject, {
+            where: { id: req.params.id },
+          })
+          .catch((err) => {
+            const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
+            res.status(500).json({ message, err });
+          });
       });
-    });
+      const message = `L'utilisateur ${user.name} ${user.firstName} a bien été modifié`;
+      res.json({ message, data: userObject });
+    }
+  });
 };
 
 exports.deleteUser = (req, res) => {
-  User.findByPk(req.params.id)
-    .then((user) => {
-      User.destroy({ where: { id: user.id } });
-      const message = `L'utilisateur ${user.userName} a bien été supprimé .`;
-      res.json({ message, data: user });
-    })
-    .catch((err) => {
-      const message = `Impossible de supprimer le profil, veuillez réessayer ultérieurement. `;
-      res.status(500).json({ message, err });
+  User.findByPk(req.params.id).then((user) => {
+    const filename = user.picture.split("/images/")[1];
+    fs.unlink(`images/${filename}`, () => {
+      User.destroy({ where: { id: user.id } })
+        .then((_) => {
+          const message = `L'utilisateur ${user.name} ${user.firstName} a bien été supprimé .`;
+          res.json({ message, data: user });
+        })
+        .catch((err) => {
+          const message = `Impossible de supprimer le profil, veuillez réessayer ultérieurement. `;
+          res.status(500).json({ message, err });
+        });
     });
+  });
 };
