@@ -52,24 +52,36 @@ exports.createComment = (req, res) => {
 };
 
 exports.updateComment = (req, res) => {
+  const commentObject = req.file
+    ? {
+        ...req.body,
+        picture: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+
   Comment.findByPk(req.params.id)
     .then((comment) => {
-      if (comment === null) {
+      if (!comment) {
         const message = `La publication demandé n'existe pas .`;
         return res.status(404).json({ message });
       }
-    })
-    .then((comment) => {
-      Comment.update(req.body, {
+    
+      const filename = comment.attachement.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+      Comment.update(commentObject, {
         where: { id: req.params.id },
       });
       const message = `La publication a bien été modifié.`;
-      res.json({ message, data: comment });
+      res.json({ message, data: commentObject });
     })
+  })
     .catch((error) => {
       const message = `La publication n'a pas pu être modifié. Réessayez dans quelques instants.`;
       res.status(500).json({ message, data: error });
-    });
+    })
+
 };
 
 exports.deleteComment = (req, res) => {
