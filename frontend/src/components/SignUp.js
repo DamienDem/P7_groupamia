@@ -40,12 +40,25 @@ const SignUp = () => {
             nameError.innerHTML = res.data.errors.name;
             firstNamedError.innerHTML = res.data.errors.firstName;
           } else {
-            window.location = "/";
-          }
-        })
+            axios({
+              url:`http://localhost:3000/login`,
+              method: "POST",
+              data: { email, password },
+              headers: { "Content-Type": "application/json" },
+            })
+            .then((res) => {
+              console.log(res);
+              if (res.data.errors) {
+                emailError.innerHTML = res.data.errors.email;
+                passwordError.innerHTML = res.data.errors.password;
+              } else {
+                window.location = "/";
+              }
+          })
+        }})
         .catch((err) => {
           console.log(err);
-        });
+        })   
     }
   };
 
