@@ -32,6 +32,7 @@ const SignUp = () => {
           name,
           firstName,
         },
+        credentials: true,
       })
         .then((res) => {
           if (res.data.errors) {
@@ -45,9 +46,9 @@ const SignUp = () => {
               method: "POST",
               data: { email, password },
               headers: { "Content-Type": "application/json" },
+              credentials: true,
             })
             .then((res) => {
-              console.log(res);
               if (res.data.errors) {
                 emailError.innerHTML = res.data.errors.email;
                 passwordError.innerHTML = res.data.errors.password;

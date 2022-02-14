@@ -40,18 +40,25 @@ exports.login = (req, res) => {
       const message = `L'utilisateur demandé n'existe pas.`;
       return res.status(404).json({ message });
     }
+   
+  
     bcrypt
       .compare(req.body.password, user.password)
       .then((valid) => {
         if (!valid) {
-          const message = "Mot de passe est incorrect ! ";
+          const message = "Mot de passe ou email est incorrect ! ";
           return res.status(401).json({ message });
         }
-        const token = jwt.sign({ userId: user.id }, `Mon_token_secret`, {
-          expiresIn: "24h",
-        });
+        const token = jwt.sign(
+          { id: user.id },
+          `Mon_token_secret`,
+          {
+            expiresIn: '86400000',
+          }
+        );
         const message = `L'utilisateur a été connecté avec succès`;
-        return res.json({ message, data: user, token });
+        res.cookie('token', token, {httpOnly: true, maxAge: '86400000'});
+        res.json({ message, data: user, token });
       })
       .catch((err) => {
         const message = `Impossible de se connecter, veuillez réessayer ultérieurement. `;
@@ -133,3 +140,5 @@ exports.deleteUser = (req, res) => {
     });
   });
 };
+
+

@@ -3,7 +3,7 @@ import React from "react";
 const PageNotFound = () => {
     return (
     <div>
-        page d'accueil
+        page inexistante
     </div>
     )
 };

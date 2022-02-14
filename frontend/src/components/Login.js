@@ -11,23 +11,26 @@ const Login = () => {
     const passwordError = document.querySelector(".password.error");
 
     axios({
-      url:`http://localhost:3000/login`,
-      method: "POST",
-      data: { email, password },
-      headers: { "Content-Type": "application/json" },
+      method: "post",
+      url: `http://localhost:3000/login`,
+      withCredentials: true,
+      data: {
+        email,
+        password,
+      },
     })
-    .then((res) => {
-      console.log(res);
-      if (res.data.errors) {
-        emailError.innerHTML = res.data.errors.email;
-        passwordError.innerHTML = res.data.errors.password;
-      } else {
-        window.location = "/";
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        console.log(res);
+        if (res.data.errors) {
+          emailError.innerHTML = res.data.errors.email;
+          passwordError.innerHTML = res.data.errors.password;
+        } else {
+          window.location = "/";
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
