@@ -1,53 +1,43 @@
 import axios from "axios";
-export const GET_USER       = 'GET_USER';
-export const UPLOAD_PICTURE = 'UPLOAD_PICTURE';
-export const UPDATE_DESCRIPTION    = 'UPDATE_DESCRIPTION';
+
+export const GET_USER = "GET_USER";
+export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
+export const UPDATE_BIO = "UPDATE_BIO";
 
 export const getUser = (uid) => {
-    return (dispatch) => {
-      return axios
-        .get(`http://localhost:3000/${uid}`)
-        .then((res) => {
-          console.log(uid);
-          dispatch({ type: GET_USER, payload: res.data });
-        })
-        .catch((err) => console.log(err));
-    };
+  return (dispatch) => {
+    return axios
+      .get(`http://localhost:3000/${uid}`)
+      .then((res) => {
+        dispatch({ type: GET_USER, payload: res.data });
+      })
+      .catch((err) => console.log(err));
   };
+};
 
-  export const UploadPicture =(data, id) => {
-    return (dispatch) => {
-       return axios({
-          method: 'PUT',
-          url: `http://localhost:3000/user/${id}`,
-          data: data,
-          withCredentials: true
-          
-       }).then((result) => {
-          return axios({
-             method: 'GET',
-             url: `http://localhost:3000/${id}`,
-             withCredentials: true 
-          }).then((result) => {
-             dispatch({ type: UPLOAD_PICTURE, payload: result.data.picture});
-          }).catch((error) => console.log(error + 'Erreur dispatch'))
-       })
-         .catch((error) => console.log(error + 'Erreur upload image !'))
-    }
- };
- 
- export const UpdateDescription =  (uid, description) => {
+export const uploadPicture = (data, uid) => {
+  return (dispatch) => {
+    return axios
+      .put(`http://localhost:3000/user/`, data)
+      .then((res) => {
+        return axios.get(`http://localhost:3000/${uid}`).then((res) => {
+          dispatch({ type: UPLOAD_PICTURE, payload: res.data.picture });
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+};
 
-    return (dispatch) => {
-       return axios({
-          method: 'PUT',
-          url: `http://localhost:3000/user/`+uid,
-          data: { description: description },
-          withCredentials: true
-          
-       }).then((result) => {
-         dispatch({ type: UPDATE_DESCRIPTION, payload: description})
-       })
-         .catch((error) => console.log(error + 'Erreur mise à jour de la description !'))
-    };
- };
+export const updateBio = (uid, description) => {
+  return (dispatch) => {
+    return axios({
+      method: "put",
+      url: `http://localhost:3000/user/` + uid,
+      data: { description },
+    })
+      .then((res) => {
+        dispatch({ type: UPDATE_BIO, payload: description });
+      })
+      .catch((err) => console.log(err));
+  };
+};

@@ -28,11 +28,6 @@ app
   .use(morgan("dev"))
   .use("/images", express.static(path.join(__dirname, "images")));
 
-  app.get('*', checkUser);
-  app.get('/token', requireAuth, (req, res) => {
-    res.status(200).send(res.locals.user.id+"")
-  });
-
 app
   .use("/", userRoutes)
   .use("/", postRoutes)

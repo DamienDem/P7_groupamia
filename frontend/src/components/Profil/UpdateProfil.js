@@ -1,56 +1,74 @@
-import React, {useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import UpdateImage from "./UploadPicture";
-import { UpdateDescription } from "../../actions/user.actions";
+import UploadImg from "./UploadImg";
+import { updateBio } from "../../actions/user.actions";
+import axios from "axios";
+import { UidContext } from "./components/AppContext";
 
 
-const Profil = () => {
-  const [description, setDescription] = useState("");
-  const [updateDescription, setUpdateDescription] = useState(false);
-  const userData = useSelector((state) => state.userReducer);
-  const dispatch = useDispatch();
+
+
+const UpdateProfil = () => {
+  const [description, setBio] = useState("");
+  const [updateForm, setUpdateForm] = useState(false);
+ // const userData =  useSelector((state) => state.userReducer.data);
+
+  //const dispatch = useDispatch();
+  useEffect(() => {
+    const getUser = (uid) => {
+        axios
+          .get(`http://localhost:3000/${uid}`)
+          .then((res) => {
+            const userData = res.data
+          })
+          .catch((err) => console.log(err));
+      getUser();
+    };
+  }, [])
+
 
   const handleUpdate = () => {
-    dispatch(UpdateDescription(userData.data.id, description));
-    console.log(userData);
-    setUpdateDescription(false);
+    dispatch(updateBio(userData.id, description));
+    setUpdateForm(false);
   };
 
   return (
     <div className="profil-container">
-      <h1> Profil de {userData.data.firstName} </h1>
+
+      <h1> Profil de {userData.firstName}</h1>
       <div className="update-container">
         <div className="left-part">
           <h3>Photo de profil</h3>
-          <img src={userData.data.picture} alt="profil" />
-          <UpdateImage />
+          <img src={userData.picture} alt="user-pic" />
+          <UploadImg />
+          
         </div>
         <div className="right-part">
-          <div className="description-update">
+          <div className="bio-update">
             <h3>Description</h3>
-            {updateDescription === false && (
+            {updateForm === false && (
               <>
-                <p onClick={() => setUpdateDescription(!updateDescription)}>{userData.data.description}</p>
-                <button onClick={() => setUpdateDescription(!updateDescription)}>
-                  Modifier
+                <p onClick={() => setUpdateForm(!updateForm)}>{userData}</p>
+                <button onClick={() => setUpdateForm(!updateForm)}>
+                  Modifier description
                 </button>
               </>
             )}
-            {updateDescription && (
+            {updateForm && (
               <>
                 <textarea
                   type="text"
-                  defaultValue={userData.data.description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  defaultValue={userData.description}
+                  onChange={(e) => setBio(e.target.value)}
                 ></textarea>
-                <button onClick={handleUpdate}>Valider </button>
+                <button onClick={handleUpdate}>Valider modifications</button>
               </>
             )}
-          </div>   
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Profil;
+export default UpdateProfil;

@@ -17,19 +17,20 @@ function App() {
     const fetchToken = async () => {
       await axios({
         method: "get",
-        url: "http://localhost:3000/token",
+        url: "http://localhost:3000/jwt",
         withCredentials: true,
       })
         .then((res) => {
+          console.log("res.data="+res.data);
           setUid(res.data);
-        })    
-        .catch((err) => console.log("No token:" + err));
+          console.log("uid:" + uid);
+        })
+        .catch((err) => console.log("Pas de token:" + err));
     };
     fetchToken();
 
     if (uid) dispatch(getUser(uid));
-
-  },[uid, dispatch]);
+  }, [uid, dispatch]);
 
   return (
     <Router>

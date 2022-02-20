@@ -40,8 +40,7 @@ exports.login = (req, res) => {
       const message = `L'utilisateur demandé n'existe pas.`;
       return res.status(404).json({ message });
     }
-   
-  
+
     bcrypt
       .compare(req.body.password, user.password)
       .then((valid) => {
@@ -49,16 +48,20 @@ exports.login = (req, res) => {
           const message = "Mot de passe ou email est incorrect ! ";
           return res.status(401).json({ message });
         }
-        const token = jwt.sign(
-          { id: user.id },
-          `Mon_token_secret`,
-          {
-            expiresIn: '86400000',
-          }
-        );
+        const token = jwt.sign({ id: user.id }, `Mon_token_secret`, {
+          expiresIn: "86400000",
+        });
+        const userData = {
+          email: user.email,
+          firstName: user.firstName,
+          name: user.name,
+          email: user.email,
+          description: user.description,
+          token
+        };
         const message = `L'utilisateur a été connecté avec succès`;
-        res.cookie('token', token, {httpOnly: true, maxAge: '86400000'});
-        res.json({ message, data: user, token });
+        res.cookie("jwt", token, { httpOnly: true, maxAge: "86400000" });
+        res.json({ message, userData });
       })
       .catch((err) => {
         const message = `Impossible de se connecter, veuillez réessayer ultérieurement. `;
@@ -93,6 +96,10 @@ exports.getOneUser = (req, res) => {
 };
 
 exports.updateProfil = (req, res) => {
+  const token        = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId       = decodedToken.id;
+  
   const userObject = req.file
     ? {
         ...req.body,
@@ -102,27 +109,29 @@ exports.updateProfil = (req, res) => {
       }
     : { ...req.body };
 
-  User.findByPk(req.params.id).then((user) => {
-    if (!user) {
-      const message = "L'utilisateur demandé n'existe pas .";
-      return res.status(404).json({ message });
-    } else {
-      const filename = user.picture.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => {
-        user
-          .update(userObject, {
-            where: { id: req.params.id },
-          })
-          .catch((err) => {
-            const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
-            res.status(500).json({ message, err });
-          });
-      });
-      const message = `L'utilisateur ${user.name} ${user.firstName} a bien été modifié`;
-      res.json({ message, data: userObject });
-    }
-  });
-};
+
+    User.findByPk(userId).then((user) => {
+      if (!user) {
+        const message = "L'utilisateur demandé n'existe pas .";
+        return res.status(404).json({ message });
+      } else {
+        const filename = user.picture.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+          user
+            .update(userObject, {
+              where: { id: userId },
+            })
+            .catch((err) => {
+              const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
+              res.status(500).json({ message, err });
+            });
+        });
+        const message = `L'utilisateur ${user.name} ${user.firstName} a bien été modifié`;
+        res.json({ message, data: userObject });
+      }
+    });
+  };
+
 
 exports.deleteUser = (req, res) => {
   User.findByPk(req.params.id).then((user) => {
@@ -140,5 +149,3 @@ exports.deleteUser = (req, res) => {
     });
   });
 };
-
-
