@@ -48,7 +48,7 @@ exports.login = (req, res) => {
           const message = "Mot de passe ou email est incorrect ! ";
           return res.status(401).json({ message });
         }
-        const token = jwt.sign({ id: user.id }, `Mon_token_secret`, {
+        const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, `Mon_token_secret`, {
           expiresIn: "86400000",
         });
         const userData = {
@@ -57,6 +57,7 @@ exports.login = (req, res) => {
           name: user.name,
           email: user.email,
           description: user.description,
+          isAdmin:user.isAdmin,
           token
         };
         const message = `L'utilisateur a été connecté avec succès`;
@@ -134,7 +135,19 @@ exports.updateProfil = (req, res) => {
 
 
 exports.deleteUser = (req, res) => {
+  const token        = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId       = decodedToken.id;
+  const adminId      = decodedToken.isAdmin;
+
+  console.log(decodedToken);
+  if(userId == req.params.id || adminId == true)
+{
   User.findByPk(req.params.id).then((user) => {
+    if(!user) {
+      const message = "L'utilisateur demandé n'existe pas .";
+      return res.status(404).json({ message });
+    }
     const filename = user.picture.split("/images/")[1];
     fs.unlink(`images/${filename}`, () => {
       User.destroy({ where: { id: user.id } })
@@ -148,4 +161,8 @@ exports.deleteUser = (req, res) => {
         });
     });
   });
+} else {
+  const message = `Vous n'êtes pas autorisés à faire cette action`;
+  res.status(401).json({message})
+}
 };

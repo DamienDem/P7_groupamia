@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
               name: user.name,
               email: user.email,
               description: user.description,
+              isAdmin:user.isAdmin,
               token
             };
             res.locals.user = userData;
