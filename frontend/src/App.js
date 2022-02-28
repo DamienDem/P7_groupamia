@@ -1,40 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Profil from "./pages/Profil";
 import PageNotFound from "./pages/Page-not-found";
 import { useDispatch } from "react-redux";
-import { UidContext } from "./components/AppContext";
-import axios from "axios";
-import { getUser } from "./actions/user.actions";
 
 function App() {
-  const [uid, setUid] = useState(null);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      await axios({
-        method: "get",
-        url: "http://localhost:3000/jwt",
-        withCredentials: true,
-      })
-        .then((res) => {
-          console.log("res.data="+res.data);
-          setUid(res.data);
-          console.log("uid:" + uid);
-        })
-        .catch((err) => console.log("Pas de token:" + err));
-    };
-    fetchToken();
-
-    if (uid) dispatch(getUser(uid));
-  }, [uid, dispatch]);
 
   return (
     <Router>
-      <UidContext.Provider value={uid}>
+     
         <div>
           <Routes>
             <Route path="/auth" element={<Auth />} />
@@ -43,7 +19,6 @@ function App() {
             <Route element={<PageNotFound />} />
           </Routes>
         </div>
-      </UidContext.Provider>
     </Router>
   );
 }

@@ -1,7 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
-const {checkUser, requireAuth} = require('./middleware/auth');
 const userRoutes = require("./routes/User");
 const postRoutes = require("./routes/Post");
 const likeRoutes = require("./routes/Like");
@@ -23,10 +22,10 @@ app.use(cors(corsOptions));
 
 app
   .use(express.json())
+  .use("/images", express.static(path.join(__dirname, "images")))
   .use(express.urlencoded({extended:false}))
   .use(cookieParser())
-  .use(morgan("dev"))
-  .use("/images", express.static(path.join(__dirname, "images")));
+  .use(morgan("dev"));
 
 app
   .use("/", userRoutes)

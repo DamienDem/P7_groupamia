@@ -1,0 +1,78 @@
+.post {
+    display: flex;
+    justify-content: center;
+    background: $color3;
+    &__container {
+      max-width: 70%;
+      border: 1px solid $color3;
+      border-radius: $boderRadius;
+      padding: 15px 30px;
+      margin: 30px 0;
+      background: $color4;
+      & img {
+        max-height: 400px;
+        width: 100%;
+        object-fit: contain;
+      }
+      &--owner {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        & img {
+          width: 50px;
+          height: 50px;
+          border-radius: 45px;
+          margin-right: 15px;
+        }
+      }
+      &__advice {
+        display: flex;
+        & li {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          margin: 15px;
+          padding: 5px;
+          border: 1px solid $color3;
+          width: 100%;
+          max-width: 80px;
+        }
+        & svg {
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+        }
+      }
+      &__comment {
+        display: flex;
+        justify-content: space-between;
+        &--profil img {
+            height: 50px;
+            width: 50px;
+            border-radius: 45px;
+        }
+        & form {
+            width: 100%;
+            margin-left: 15px;
+            & input[type="text"] {
+                display: flex;
+                padding: 5px;
+                height: 50px;
+                width: 100%;
+            }
+            & .form--submit {
+              margin: 15px;
+              & input {
+                height: 40px;
+                width: 100px;
+                margin: 0 15px;
+                padding: 5px 10px;
+                border-radius: $boderRadius;
+                background:  $color1;
+                color: $color4;
+              }
+            }
+        }
+      }
+    }
+  }

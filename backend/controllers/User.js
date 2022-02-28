@@ -49,7 +49,7 @@ exports.login = (req, res) => {
           return res.status(401).json({ message });
         }
         const token = jwt.sign(
-          { id: user.id, isAdmin: user.isAdmin },
+          { id: user.id, isAdmin: user.isAdmin,  },
           `Mon_token_secret`,
           {
             expiresIn: "86400000",
@@ -62,11 +62,10 @@ exports.login = (req, res) => {
           email: user.email,
           description: user.description,
           isAdmin: user.isAdmin,
-          token,
         };
         const message = `L'utilisateur a été connecté avec succès`;
         res.cookie("jwt", token, { httpOnly: true, maxAge: "86400000" });
-        res.json({ message, userData });
+        res.json({ message, userData, token });
       })
       .catch((err) => {
         const message = `Impossible de se connecter, veuillez réessayer ultérieurement. `;
@@ -77,7 +76,7 @@ exports.login = (req, res) => {
 
 exports.getAllUsers = (req, res) => {
   User.findAll({
-    attributes : ['name',"firstName", 'description', 'picture']
+    attributes : ["id",'name',"firstName", 'description', 'picture']
   })
     .then((users) => {
       const message = `la liste des utilisateurs a bien été récupérée . `;
@@ -90,6 +89,7 @@ exports.getAllUsers = (req, res) => {
 };
 
 exports.getOneUser = (req, res) => {
+  
   User.findOne({
     where: { id: req.params.id },
   }).then((user) => {
@@ -102,9 +102,9 @@ exports.getOneUser = (req, res) => {
       firstName: user.firstName,
       name: user.name,
       email: user.email,
+      picture: user.picture,
       description: user.description,
       isAdmin: user.isAdmin,
-      token,
     };
     const message = `L'utilisateur ${user.name} ${user.firstName} a bien été trouvé `;
     res.json({ message, data: userData });
@@ -177,4 +177,19 @@ exports.deleteUser = (req, res) => {
     const message = `Vous n'êtes pas autorisés à faire cette action`;
     res.status(401).json({ message });
   }
+};
+
+exports.authentification = (req, res) => {
+    
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId = decodedToken.id;
+  const userAdmin = decodedToken.isAdmin;
+
+  if (token && token!=null) {
+      res.status(200).json({id:userId, isAdmin:userAdmin});
+  } else {
+      res.status(400).json('Token innexistant !');
+  };
+
 };

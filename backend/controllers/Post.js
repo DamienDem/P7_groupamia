@@ -5,6 +5,7 @@ const fs = require("fs");
 exports.createPost = (req, res) => {
   const title = req.body.title;
   const content = req.body.content;
+
   const imageURL = req.file
   ? {
       attachement: `${req.protocol}://${req.get("host")}/images/${
@@ -32,9 +33,11 @@ exports.createPost = (req, res) => {
         content: content,
         imageURL,
         likes: 0,
+      })
+      .then((newPost) => {
+        const message = `La publication est postée`;
+        return res.json({ message, data: newPost });
       });
-      const message = `La publication est postée`;
-      return res.json({ message, data: user });
     })
     .catch((err) => {
       const message = `Impossible de créer la publication, veuillez réessayer ultérieurement .`;

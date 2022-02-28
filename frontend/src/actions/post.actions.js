@@ -1,4 +1,4 @@
-import axios from 'axios'
+/*import axios from 'axios'
 
 export const GET_POSTS = "GET_POSTS";
 
@@ -11,4 +11,4 @@ export const getPosts = () => {
         })
         .catch((err) => console.log(err))
     }
-}
+}*/

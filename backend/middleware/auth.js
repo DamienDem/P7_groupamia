@@ -11,16 +11,7 @@ module.exports = (req, res, next) => {
       if (userId) {
         User.findOne({ where: { id: userId } })
           .then((user) => {
-            const userData = {
-              email: user.email,
-              firstName: user.firstName,
-              name: user.name,
-              email: user.email,
-              description: user.description,
-              isAdmin:user.isAdmin,
-              token
-            };
-            res.locals.user = userData;
+            res.locals.user = user;
           })
           .catch((err) => {
             const message = `Utilisateur introuvable`;

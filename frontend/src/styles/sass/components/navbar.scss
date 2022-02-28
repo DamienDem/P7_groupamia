@@ -1,0 +1,48 @@
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0;
+    height: 40px;
+    & img {
+      padding: 5px;
+      width: 20%;
+      z-index: -1;
+    }
+    & ul {
+      display: flex;
+  
+      & li {
+        padding: 10px;
+        background: $color1;
+        border-radius: $boderRadius;
+        color: $color4;
+        cursor: pointer;
+        margin: 15px;
+      }
+    }
+    & div {
+      display: flex;
+      width: 33%;
+      align-items: center;
+    }
+    & .profilPicture {
+      background-color: none;
+      border-radius: 45px;
+      height: 50px;
+      width: 50px;
+      cursor: pointer;
+    }
+  & .publication {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: $boderRadius;
+    height: 45px;
+    width: 50%;
+    background: $color1;
+    color: $color4;
+    cursor: pointer;
+    margin: 0 15px;
+  }
+  }

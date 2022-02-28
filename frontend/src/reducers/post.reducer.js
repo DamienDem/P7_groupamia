@@ -1,4 +1,4 @@
-import { GET_POSTS } from "../actions/post.actions";
+/*import { GET_POSTS } from "../actions/post.actions";
 
 const initialState = {};
 
@@ -11,3 +11,4 @@ export default function postReducer(state = initialState, action) {
       return state;
   }
 }
+*/

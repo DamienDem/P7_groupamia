@@ -1,7 +1,3 @@
-$color1 : #ba4e55;
-$color2 : #223451;
-$color3: #ffff;
-
 * ,
 :after,
 :before {
@@ -11,11 +7,11 @@ $color3: #ffff;
     text-decoration: none;
     list-style-type: none;
 }
-.fa , .fas {
-    font: 900;
-} 
+
 img {
     object-fit: cover;
-    max-height: 170px;
-    width: 100%;
-}
+  }
+
+  .fa , .fas {
+    font: 900;
+} 
