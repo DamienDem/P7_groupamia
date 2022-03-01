@@ -193,3 +193,16 @@ exports.authentification = (req, res) => {
   };
 
 };
+
+exports.logout = (req,res) => {
+  
+  const token = req.cookies.jwt;
+
+  if (token) {
+      res.cookie('jwt', '', { maxAge: 1 });
+      res.redirect('/');
+  } else {
+    const message = `Vous n'êtes pas connecté`
+      return res.status(401).json({ message });
+  };
+}

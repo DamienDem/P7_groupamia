@@ -1,38 +1,47 @@
+.nav-container {
+  width: 100%;
+  background: $color4;
+  margin-bottom: 10px;
+}
 nav {
+  width: 100%;
+  background: $color4;
+  margin: 5px 0;
+  & img {
+    width: 100%;
+    z-index: -1;
+    max-height: 50px;
+    margin-right: 10px;
+  }
+  & .logo {
+    min-width: 200px;
+  }
+  & ul {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 15px 0;
-    height: 40px;
-    & img {
-      padding: 5px;
-      width: 20%;
-      z-index: -1;
-    }
-    & ul {
+    justify-content: space-around;
+
+    & li {
       display: flex;
-  
-      & li {
-        padding: 10px;
+      align-items: center;
+      margin: 0 10px;
+      max-height: 40px;
+      & .button {
         background: $color1;
-        border-radius: $boderRadius;
         color: $color4;
+        min-height: 40px;
+        border-radius: $boderRadius;
+        padding: 10px;
         cursor: pointer;
-        margin: 15px;
       }
     }
-    & div {
-      display: flex;
-      width: 33%;
-      align-items: center;
-    }
-    & .profilPicture {
-      background-color: none;
-      border-radius: 45px;
-      height: 50px;
-      width: 50px;
-      cursor: pointer;
-    }
+  }
+  & .profilPicture {
+    background-color: none;
+    border-radius: 45px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+  }
   & .publication {
     display: flex;
     justify-content: center;
@@ -45,4 +54,4 @@ nav {
     cursor: pointer;
     margin: 0 15px;
   }
-  }
+}

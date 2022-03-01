@@ -1,16 +1,11 @@
-
-/*import React, { useContext } from "react";
-import { UidContext } from "../components/AppContext";*/
+import Navbar from "../components/Navbar";
 import UpdateProfil from "../components/Profil/UpdateProfil";
 
 const Profil = () => {
-  
-
   return (
     <div className="profil">
-      
-        <UpdateProfil />
- 
+      <Navbar />
+      <UpdateProfil />
     </div>
   );
 };
