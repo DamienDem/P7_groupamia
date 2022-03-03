@@ -1,10 +1,13 @@
 const express = require("express");
 const { Post, Like } = require("../db/sequelize");
+const jwt = require("jsonwebtoken");
 
 exports.likePost = (req,res) => {
-  let postId = parseInt(req.params.postId);
-  let userId = parseInt(req.body.userId);
-  let like = parseInt(req.body.like);
+  const postId = parseInt(req.params.postId);
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId = decodedToken.id;
+  const like = parseInt(req.body.like);
 
   Like.findOne({
     where: {
@@ -15,7 +18,7 @@ exports.likePost = (req,res) => {
     switch(like){
       case 1: 
       if(!userAlreadyVote) {
-        let newLike = Like.create({
+        Like.create({
           postId: postId,
           userId: userId,
           isLike: 1
@@ -40,7 +43,7 @@ exports.likePost = (req,res) => {
       break;
     case -1:
       if(!userAlreadyVote) {
-        let newLike = Like.create({
+        Like.create({
           postId: postId,
           userId: userId,
           isLike: -1
@@ -112,4 +115,17 @@ exports.likePost = (req,res) => {
         }
     }
   })
+};
+
+exports.getAllLikes = (req,res) => {
+
+   Like.findAll()
+   .then((likes) => {
+    const message = `la liste des likes a bien été récupérée . `;
+    res.json({ message, data: likes });
+  })
+  .catch((err) => {
+    const message = `La liste des likes n'a pas pu être récupérée. Réessayer dans quelques instants.`;
+    res.status(500).json({ message, data: err });
+  });
 }
