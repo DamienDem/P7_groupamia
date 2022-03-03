@@ -23,7 +23,7 @@ const UpdateProfil = () => {
   const fetchToken = async () => {
     await axios({
       method: "get",
-      url: "http://localhost:3000/",
+      url: "http://localhost:3000",
       withCredentials: true,
     })
       .then((res) => {
