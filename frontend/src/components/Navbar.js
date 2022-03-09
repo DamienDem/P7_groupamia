@@ -58,7 +58,7 @@ const Navbar = () => {
         <nav>
           <ul>
             <li>
-              <NavLink exact to="/">
+              <NavLink exact ='true' to="/">
                 <img
                 className="logo"
                   src="./images/icon-left-font.png"
@@ -68,14 +68,14 @@ const Navbar = () => {
             </li>
             <li>Bienvenue {userData.firstName}</li>
             <li>
-            <NavLink exact to="/profil">
+            <NavLink exact ='true' to="/profil">
                 <img
                   className="profilPicture"
                   src={userData.picture}
                   alt="profil"
                 />
               </NavLink>
-              <NavLink exact to="/profil">
+              <NavLink exact ='true' to="/profil">
                 <div onClick={logout} className="logout button"> Se déconnecter </div>
               </NavLink>
             </li>
@@ -86,12 +86,12 @@ const Navbar = () => {
           <ul>
             <img className="logo" src="./images/icon-left-font.png" alt="logo Groupomania" />
             <li >
-              <NavLink exact to="/auth">
+              <NavLink exact ='true' to="/auth">
                 Se connecter
               </NavLink>
             </li>
             <li>
-              <NavLink exact to="/auth">
+              <NavLink exact ='true' to="/auth">
                 S'inscrire
               </NavLink>
             </li>
