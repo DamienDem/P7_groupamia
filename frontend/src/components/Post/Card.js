@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"
 import Advice from "./Advice";
+import { MoreOutlined, DeleteOutlined ,EditOutlined} from "@ant-design/icons";
 
 const Card = ({post}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [usersData, setUsersData] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [isAdmin, setIsAdmin] =useState(null);
+    const [isUpdated, setIsUpdated] = useState(false);
+    const [textUpdate, setTextUpdate] = useState(null)
     
     const dateParser = (num) => {
         let options = {
@@ -23,6 +28,19 @@ const Card = ({post}) => {
         return date.toString();
       };
 
+      const fetchToken = async () => {
+        await axios({
+          method: "get",
+          url: "http://localhost:3000",
+          withCredentials: true,
+        })
+          .then((res) => {
+            setUserId(res.data.id);
+            setIsAdmin(res.data.isAdmin)
+            console.log(res.data.id);
+          })
+          .catch((err) => console.log("Pas de token:" + err));
+      };
         const fetchUsersData = async () => {
          
             await axios({
@@ -36,8 +54,28 @@ const Card = ({post}) => {
            .catch((err) => { console.log('fetchUsersData:'+err);})
           }
        
+          const updatePost = async () => {
+              if (textUpdate){
+                  await axios({
+                      method:"put",
+                      url: "http://localhost:3000/post/"+ post.id,
+                      data: {
+                          ...post,
+                          content:textUpdate, 
+                          UserId: userId
+                      },
+                      withCredentials: true
+                  })
+                  .then((res) => {
+                      console.log(res);
+                  })
+                  .catch((err) => { console.log('erreur modification', err);})
+              }
+              setTextUpdate(false)
+          }
 
       useEffect(() => {
+          fetchToken()
   
         if (usersData !== null) {
             setIsLoading(false);
@@ -76,13 +114,29 @@ const Card = ({post}) => {
                  else return null
                 }).join('')}  </span>
                 <span>{dateParser(post.created)} </span>
+                { userId === post.userId && <MoreOutlined /> }
+                { isAdmin && userId !== post.userId && <DeleteOutlined />}
             </div>
             <div className="post__container--image">
                 <h2> {post.title} </h2>
             <img src= {post.attachement} alt=""/>
             </div>
             <div className="post__container--content">
-               <p> {post.content} </p>
+            {isUpdated === false && <p>{post.content}</p>}
+            {isUpdated && (
+                <div className="post__container--update">
+                    <textarea defaultValue={post.content}
+                    onChange={(e) => setTextUpdate(e.target.value)}
+                    />
+                    <div className="post__container--button">
+                    <button className="button" onClick={updatePost}> Valider </button>
+                    </div>
+                    </div>
+            )}
+            {userId === post.userId && (
+                <EditOutlined onClick={() => setIsUpdated(!isUpdated)}/>
+            )}
+            {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteOutlined />}
             </div>
            <Advice post={post}/>
             </>

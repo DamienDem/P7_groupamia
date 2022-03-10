@@ -3,7 +3,7 @@ import {
   LikeOutlined,
   DislikeOutlined,
   LikeFilled,
-  DislikeFilled,
+  DislikeFilled
 } from "@ant-design/icons";
 import axios from "axios";
 
@@ -63,7 +63,7 @@ const Advice = ({ post }) => {
   useEffect(() => {
     fetchToken();
     getAllLikes();
-  }, []);
+  }, [userId]);
 
  
   const onLike = async () => {
