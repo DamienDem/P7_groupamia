@@ -74,10 +74,11 @@ exports.getOnePost = (req, res) => {
 };
 
 exports.updatePost = (req, res) => {
+  const attachement = req.body.attachement;
   const postObject = req.file
     ? {
         ...req.body,
-        picture: `${req.protocol}://${req.get("host")}/images/${
+        attachement: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
       }
@@ -94,14 +95,22 @@ exports.updatePost = (req, res) => {
             const message = `La publication demandé n'existe pas .`;
             return res.status(404).json({ message });
           }
-          const filename = post.attachement.split("/images/")[1];
-          fs.unlink(`images/${filename}`, () => {
+          if(attachement !== null) {
+            const filename = post.attachement.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+              post.update(postObject, {
+                where: { id: req.params.id },
+              });
+              const message = `La publication :"${post.title}" a bien été modifié.`;
+              res.json({ message, data: postObject });
+            });
+          } else {
             post.update(postObject, {
               where: { id: req.params.id },
             });
             const message = `La publication :"${post.title}" a bien été modifié.`;
             res.json({ message, data: postObject });
-          });
+          }
         });
       }
     })
