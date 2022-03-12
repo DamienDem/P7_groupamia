@@ -1,5 +1,6 @@
 const express = require("express");
-const { Post, User } = require("../db/sequelize");
+const { Post, User, Comment, Like } = require("../db/sequelize");
+const jwt = require("jsonwebtoken");
 const fs = require("fs");
 
 exports.createPost = (req, res) => {
@@ -121,33 +122,89 @@ exports.updatePost = (req, res) => {
 };
 
 exports.deletePost = (req, res) => {
-  User.findByPk(req.body.userId)
-  .then(user => {
-    if (!user) {
-      const message = "L'utilisateur demandé n'existe pas .";
-      return res.status(404).json({ message });
-    } else {
+
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId = decodedToken.id;
+  const isAdmin      = decodedToken.isAdmin;
+
       Post.findByPk(req.params.id)
         .then((post) => {
           if (post === null) {
             const message = `La publication demandé n'existe pas .`;
             return res.status(404).json({ message });
           }
-        })
-        const filename = user.picture.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
-          Post.destroy({
-            where: { id: req.params.id },
-          })
-          .then(_ => {
-            const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
-            res.json({ message });  
-          })
-        .catch((error) => {
-          const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
-          res.status(500).json({ message, data: error });
-        });
-    })
-  }
-})
-};
+          if(post.userId === userId || isAdmin === true) {
+            if( post.attachement !== null) {
+              const filename = post.attachement.split("/images/")[1];
+              fs.unlink(`images/${filename}`, () => {
+            
+              Like.destroy({
+                where: {postId: req.params.id}
+              })
+              .then(() => {
+                console.log(" Le like a été supprimé ");
+              })
+              .catch((err) => {
+                const message = "Impossible de supprimer le like"
+                res.status(400).json({message, err})
+              }) 
+              Comment.destroy({
+                where: { postId: req.params.id}
+              })
+              .then(_ => {
+                 console.log("Les commentaires ont été supprimés");
+              })
+              .catch((err) => {
+                const message = "Impossible de supprimer les messages"
+                res.status(400).json({message}, err)
+              })
+              Post.destroy({
+                where: { id: req.params.id },
+              })
+              .then(_ => {
+                const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
+                res.json({ message });  
+              })
+            .catch((error) => {
+              const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
+              res.status(500).json({ message, data: error });
+            });
+
+            })
+            } else {
+              Like.destroy({
+                where: {postId: req.params.id}
+              })
+              .then(() => {
+                console.log(" Le like a été supprimé ");
+              })
+              .catch((err) => {
+                const message = "Impossible de supprimer le like"
+                res.status(400).json({message, err})
+              }) 
+              Comment.destroy({
+                where: { postId: req.params.id}
+              })
+              .then(_ => {
+                 console.log("Les commentaires ont été supprimés");
+              })
+              .catch((err) => {
+                const message = "Impossible de supprimer les messages"
+                res.status(400).json({message}, err)
+              })
+              Post.destroy({
+                where: { id: req.params.id },
+              })
+              .then(_ => {
+                const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
+                res.json({ message });  
+              })
+            .catch((error) => {
+              const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
+              res.status(500).json({ message, data: error });
+            });
+            }
+        }
+      })
+}

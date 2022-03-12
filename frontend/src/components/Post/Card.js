@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"
 import Advice from "./Advice";
+import DeleteCard from "./DeleteCard";
 import { MoreOutlined, DeleteOutlined ,EditOutlined} from "@ant-design/icons";
+
 
 const Card = ({post}) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -71,7 +73,7 @@ const Card = ({post}) => {
                   })
                   .catch((err) => { console.log('erreur modification', err);})
               }
-              setTextUpdate(false)
+              setIsUpdated(false)
           }
 
       useEffect(() => {
@@ -114,8 +116,6 @@ const Card = ({post}) => {
                  else return null
                 }).join('')}  </span>
                 <span>{dateParser(post.created)} </span>
-                { userId === post.userId && <MoreOutlined /> }
-                { isAdmin && userId !== post.userId && <DeleteOutlined />}
             </div>
             <div className="post__container--image">
                 <h2> {post.title} </h2>
@@ -136,7 +136,7 @@ const Card = ({post}) => {
             {userId === post.userId && (
                 <EditOutlined onClick={() => setIsUpdated(!isUpdated)}/>
             )}
-            {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteOutlined />}
+            {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteCard post={post} />}
             </div>
            <Advice post={post}/>
             </>
