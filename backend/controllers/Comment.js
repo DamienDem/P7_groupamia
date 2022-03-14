@@ -1,11 +1,14 @@
 const express = require("express");
 const { Post, Comment, User } = require("../db/sequelize");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
 exports.createComment = (req, res) => {
   let postId = req.params.postId;
   let content = req.body.content;
-  let userId = req.body.userId;
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId = decodedToken.id;
   let imageURL = req.file
     ? {
         attachement: `${req.protocol}://${req.get("host")}/images/${
@@ -47,7 +50,7 @@ exports.createComment = (req, res) => {
     })
     .catch((err) => {
       const message = "Erreur serveur, veuillez réessayer dans un instant";
-      res.status(500).hson({ message, err });
+      res.status(500).json({ message, err });
     });
 };
 
@@ -124,9 +127,7 @@ exports.deleteComment = (req, res) => {
 };
 
 exports.getAllComments = (req, res) => {
-  Comment.findAll({
-    where: { postId: req.params.id },
-  })
+  Comment.findAll()
     .then((comments) => {
       const message = `la liste des commentaires a bien été récupérée . `;
       res.json({ message, data: comments });

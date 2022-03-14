@@ -54,7 +54,6 @@ exports.dislikePost = (req, res) => {
       userId: userId,
     },
   }).then((userAlreadyVote) => {
-    
       if (!userAlreadyVote) {
         Like.create({
           postId: postId,

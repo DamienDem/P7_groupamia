@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { DeleteOutlined } from "@ant-design/icons";
 
@@ -12,6 +12,7 @@ const DeleteCard = ({ post }) => {
         })
         .then((res) => {
             console.log(res.data);
+            window.location = "/";
         })
         .catch((err) => { 
             console.log("suppression échouée", err);
@@ -24,7 +25,7 @@ const DeleteCard = ({ post }) => {
                 deletePost()
             }
         }}>
-            <DeleteOutlined/>
+            <DeleteOutlined />
         </div>
     )
 }

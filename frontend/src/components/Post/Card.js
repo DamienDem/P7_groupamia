@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"
 import Advice from "./Advice";
 import DeleteCard from "./DeleteCard";
-import { MoreOutlined, DeleteOutlined ,EditOutlined} from "@ant-design/icons";
+import { CommentOutlined,EditOutlined} from "@ant-design/icons";
+import CardComment from "./Cardcomment";
 
 
 const Card = ({post}) => {
@@ -11,7 +12,8 @@ const Card = ({post}) => {
     const [userId, setUserId] = useState(null);
     const [isAdmin, setIsAdmin] =useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
-    const [textUpdate, setTextUpdate] = useState(null)
+    const [textUpdate, setTextUpdate] = useState(null);
+    const [showComments, setShowComments] = useState(false);
     
     const dateParser = (num) => {
         let options = {
@@ -139,6 +141,8 @@ const Card = ({post}) => {
             {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteCard post={post} />}
             </div>
            <Advice post={post}/>
+           <CommentOutlined onClick={(e) => { setShowComments(!showComments)}} />
+           {showComments && <CardComment post={post} usersData={usersData}/>}
             </>
             )}
         </li>
