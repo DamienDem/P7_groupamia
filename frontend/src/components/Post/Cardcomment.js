@@ -1,7 +1,8 @@
 import react, { useEffect, useState } from "react";
 import axios from "axios";
+import EditAndDeleteComment from "./EditAndDeleteComment";
 
-const CardComment = ({ post, usersData }) => {
+const CardComment = ({ post, usersData, isAdmin, userId }) => {
   const [comments, setComments] = useState([]);
   const [text, setText] = useState("");
 
@@ -64,7 +65,7 @@ const CardComment = ({ post, usersData }) => {
           if(comment.postId === post.id) {
               return (
                 <div
-                  key={comment._id}
+                  key={comment.id}
                 >
                   <div>
                     <img
@@ -106,10 +107,11 @@ const CardComment = ({ post, usersData }) => {
                       <img src={comment.attachement} />
                     )}
                     <p>{comment.content}</p>
+                    <EditAndDeleteComment post={post} usersData={usersData} userId={userId} isAdmin= {isAdmin} commentId={comment.id}/>
                   </div>
                 </div>
               );
-          } 
+          } else return null;
       })}
       {
         <form action="" onSubmit={handleComment} className="comment-form">

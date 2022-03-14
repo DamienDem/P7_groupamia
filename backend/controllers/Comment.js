@@ -87,7 +87,10 @@ exports.updateComment = (req, res) => {
 };
 
 exports.deleteComment = (req, res) => {
-  const userId = req.params.userId;
+  
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId = decodedToken.id;
 
   User.findOne({
     where: { id: userId },

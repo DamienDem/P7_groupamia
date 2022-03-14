@@ -3,7 +3,7 @@ import axios from "axios"
 import Advice from "./Advice";
 import DeleteCard from "./DeleteCard";
 import { CommentOutlined,EditOutlined} from "@ant-design/icons";
-import CardComment from "./Cardcomment";
+import CardComment from "./CardComment";
 
 
 const Card = ({post}) => {
@@ -142,7 +142,7 @@ const Card = ({post}) => {
             </div>
            <Advice post={post}/>
            <CommentOutlined onClick={(e) => { setShowComments(!showComments)}} />
-           {showComments && <CardComment post={post} usersData={usersData}/>}
+           {showComments && <CardComment post={post} usersData={usersData} userId={userId} isAdmin= {isAdmin} />}
             </>
             )}
         </li>
