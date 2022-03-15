@@ -2,6 +2,7 @@ const express = require("express");
 const { Post, Comment, User } = require("../db/sequelize");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const { log } = require("console");
 
 exports.createComment = (req, res) => {
   let postId = req.params.postId;
@@ -9,6 +10,7 @@ exports.createComment = (req, res) => {
   const token = req.cookies.jwt;
   const decodedToken = jwt.verify(token, `Mon_token_secret`);
   const userId = decodedToken.id;
+
   let imageURL = req.file
     ? {
         attachement: `${req.protocol}://${req.get("host")}/images/${
@@ -55,39 +57,61 @@ exports.createComment = (req, res) => {
 };
 
 exports.updateComment = (req, res) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId = decodedToken.id;
+
   const commentObject = req.file
     ? {
         ...req.body,
-        picture: `${req.protocol}://${req.get("host")}/images/${
+        attachement: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
       }
     : { ...req.body };
 
-  Comment.findByPk(req.params.id)
-    .then((comment) => {
-      if (!comment) {
-        const message = `La publication demandé n'existe pas .`;
+  User.findByPk(userId)
+    .then((user) => {
+      if (!user) {
+        const message = "L'utilisateur demandé n'existe pas .";
         return res.status(404).json({ message });
+      } else {
+        Comment.findByPk(req.params.id)
+          .then((comment) => {
+            if (!comment) {
+              const message = `La publication demandé n'existe pas .`;
+              return res.status(404).json({ message });
+            }
+            if (comment.attachement !== null) {
+              const filename = comment.attachement.split("/images/")[1];
+              fs.unlink(`images/${filename}`, () => {
+                Comment.update(commentObject, {
+                  where: { id: req.params.id },
+                });
+                const message = `La publication a bien été modifié.`;
+                res.json({ message, data: commentObject });
+              });
+            } else {
+              Comment.update(commentObject, {
+                where: { id: req.params.id },
+              });
+              const message = `La publication a bien été modifié.`;
+              res.json({ message, data: commentObject });
+            }
+          })
+          .catch((error) => {
+            const message = `La publication n'a pas pu être modifié. Réessayez dans quelques instants.`;
+            res.status(500).json({ message, data: error });
+          });
       }
-
-      const filename = comment.attachement.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => {
-        Comment.update(commentObject, {
-          where: { id: req.params.id },
-        });
-        const message = `La publication a bien été modifié.`;
-        res.json({ message, data: commentObject });
-      });
     })
-    .catch((error) => {
-      const message = `La publication n'a pas pu être modifié. Réessayez dans quelques instants.`;
-      res.status(500).json({ message, data: error });
+    .catch((err) => {
+      const message = "Utilisateur inexistant";
+      res.status(400).json({ message, err });
     });
 };
 
 exports.deleteComment = (req, res) => {
-  
   const token = req.cookies.jwt;
   const decodedToken = jwt.verify(token, `Mon_token_secret`);
   const userId = decodedToken.id;

@@ -107,7 +107,7 @@ const CardComment = ({ post, usersData, isAdmin, userId }) => {
                       <img src={comment.attachement} />
                     )}
                     <p>{comment.content}</p>
-                    <EditAndDeleteComment post={post} usersData={usersData} userId={userId} isAdmin= {isAdmin} commentId={comment.id}/>
+                    <EditAndDeleteComment post={post} usersData={usersData} userId={userId} isAdmin= {isAdmin} comment={comment} getAllComments={getAllComments}/>
                   </div>
                 </div>
               );
