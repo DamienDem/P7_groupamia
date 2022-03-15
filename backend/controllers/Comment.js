@@ -130,27 +130,42 @@ exports.deleteComment = (req, res) => {
           const message = `Le commentaire demandé n'existe pas`;
           return res.status(400).json({ message });
         }
-        if (userId == comment.userId || admin) {
-          const filename = comment.attachement.split("/images/")[1];
-          fs.unlink(`images/${filename}`, () => {
-            const commentDeleted = comment;
-            return Comment.destroy({
-              where: { id: comment.id },
-            }).then((_) => {
-              const message = `Le commentaire avec l'ID n°${commentDeleted.id} a bien été supprimé .`;
-              res.json({ message, data: commentDeleted });
+        if(comment.attachement !== null){
+          if (userId == comment.userId || admin) {
+            const filename = comment.attachement.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+              const commentDeleted = comment;
+              return Comment.destroy({
+                where: { id: comment.id },
+              }).then((_) => {
+                const message = `Le commentaire avec l'ID n°${commentDeleted.id} a bien été supprimé .`;
+                res.json({ message, data: commentDeleted });
+              });
             });
-          });
+          } else {
+            const message = `Vous n'avez pas les droits pour supprimer ce commentaire .`;
+            res.status(401).json({ message });
+          }  
         } else {
-          const message = `Vous n'avez pas les droits pour supprimer ce commentaire .`;
-          res.status(401).json({ message });
+          if (userId == comment.userId || admin) {
+              const commentDeleted = comment;
+              return Comment.destroy({
+                where: { id: comment.id },
+              }).then((_) => {
+                const message = `Le commentaire avec l'ID n°${commentDeleted.id} a bien été supprimé .`;
+                res.json({ message, data: commentDeleted });
+              });
+          } else {
+            const message = `Vous n'avez pas les droits pour supprimer ce commentaire .`;
+            res.status(401).json({ message });
         }
-      });
-    })
+    }
+  })
     .catch((error) => {
       const message = `Le commentaire n'a pas pu être récupéré. Réessayez dans quelques instants.`;
       res.status(500).json({ message, data: error });
     });
+})
 };
 
 exports.getAllComments = (req, res) => {

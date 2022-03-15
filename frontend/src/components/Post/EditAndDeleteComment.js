@@ -37,6 +37,7 @@ const EditAndDeleteComment = ({ userId, isAdmin, comment, getAllComments}) => {
     })
       .then((res) => {
         console.log(res.data);
+        getAllComments()
       })
       .catch((err) => {
         console.log("impossible de supprimer le commentaire", err);
