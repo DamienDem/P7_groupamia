@@ -4,22 +4,6 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 
 exports.createPost = (req, res) => {
-  const title = req.body.title;
-  const content = req.body.content;
-
-  const imageURL = req.file
-  ? {
-      attachement: `${req.protocol}://${req.get("host")}/images/${
-        req.file.filename
-      }`,
-    }
-  : { attachement: null };
-
-
-  if (title == null || content == null) {
-    const message = `Paramétre manquant . `;
-    return res.status(404).json({ message });
-  }
   User.findOne({
     where: { id: req.params.id },
   })
@@ -28,14 +12,19 @@ exports.createPost = (req, res) => {
         const message = `L'utilisateur n'existe pas`;
         return res.status(404).json({ message });
       }
-      Post.create({
-        userId: req.params.id,
-        title: title,
-        content: content,
-        imageURL,
-        likes: 0,
-      })
-      .then((newPost) => {
+
+      const imageURL = req.file
+        ? {
+            ...req.body,
+            userId: req.params.id,
+            attachement: `${req.protocol}://${req.get("host")}/images/${
+              req.file.filename
+            }`,
+          }
+        : { ...req.body, userId: req.params.id };
+
+      console.log(req.params.id, imageURL);
+      Post.create(imageURL).then((newPost) => {
         const message = `La publication est postée`;
         return res.json({ message, data: newPost });
       });
@@ -96,7 +85,7 @@ exports.updatePost = (req, res) => {
             const message = `La publication demandé n'existe pas .`;
             return res.status(404).json({ message });
           }
-          if(attachement !== null) {
+          if (attachement !== null) {
             const filename = post.attachement.split("/images/")[1];
             fs.unlink(`images/${filename}`, () => {
               post.update(postObject, {
@@ -122,89 +111,85 @@ exports.updatePost = (req, res) => {
 };
 
 exports.deletePost = (req, res) => {
-
   const token = req.cookies.jwt;
   const decodedToken = jwt.verify(token, `Mon_token_secret`);
   const userId = decodedToken.id;
-  const isAdmin      = decodedToken.isAdmin;
+  const isAdmin = decodedToken.isAdmin;
 
-      Post.findByPk(req.params.id)
-        .then((post) => {
-          if (post === null) {
-            const message = `La publication demandé n'existe pas .`;
-            return res.status(404).json({ message });
-          }
-          if(post.userId === userId || isAdmin === true) {
-            if( post.attachement !== null) {
-              const filename = post.attachement.split("/images/")[1];
-              fs.unlink(`images/${filename}`, () => {
-            
-              Like.destroy({
-                where: {postId: req.params.id}
-              })
-              .then(() => {
-                console.log(" Le like a été supprimé ");
-              })
-              .catch((err) => {
-                const message = "Impossible de supprimer le like"
-                res.status(400).json({message, err})
-              }) 
-              Comment.destroy({
-                where: { postId: req.params.id}
-              })
-              .then(_ => {
-                 console.log("Les commentaires ont été supprimés");
-              })
-              .catch((err) => {
-                const message = "Impossible de supprimer les messages"
-                res.status(400).json({message}, err)
-              })
-              Post.destroy({
-                where: { id: req.params.id },
-              })
-              .then(_ => {
-                const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
-                res.json({ message });  
-              })
-            .catch((error) => {
-              const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
-              res.status(500).json({ message, data: error });
-            });
-
+  Post.findByPk(req.params.id).then((post) => {
+    if (post === null) {
+      const message = `La publication demandé n'existe pas .`;
+      return res.status(404).json({ message });
+    }
+    if (post.userId === userId || isAdmin === true) {
+      if (post.attachement !== null) {
+        const filename = post.attachement.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+          Like.destroy({
+            where: { postId: req.params.id },
+          })
+            .then(() => {
+              console.log(" Le like a été supprimé ");
             })
-            } else {
-              Like.destroy({
-                where: {postId: req.params.id}
-              })
-              .then(() => {
-                console.log(" Le like a été supprimé ");
-              })
-              .catch((err) => {
-                const message = "Impossible de supprimer le like"
-                res.status(400).json({message, err})
-              }) 
-              Comment.destroy({
-                where: { postId: req.params.id}
-              })
-              .then(_ => {
-                 console.log("Les commentaires ont été supprimés");
-              })
-              .catch((err) => {
-                const message = "Impossible de supprimer les messages"
-                res.status(400).json({message}, err)
-              })
-              Post.destroy({
-                where: { id: req.params.id },
-              })
-              .then(_ => {
-                const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
-                res.json({ message });  
-              })
+            .catch((err) => {
+              const message = "Impossible de supprimer le like";
+              res.status(400).json({ message, err });
+            });
+          Comment.destroy({
+            where: { postId: req.params.id },
+          })
+            .then((_) => {
+              console.log("Les commentaires ont été supprimés");
+            })
+            .catch((err) => {
+              const message = "Impossible de supprimer les messages";
+              res.status(400).json({ message }, err);
+            });
+          Post.destroy({
+            where: { id: req.params.id },
+          })
+            .then((_) => {
+              const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
+              res.json({ message });
+            })
             .catch((error) => {
               const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
               res.status(500).json({ message, data: error });
             });
-            }
-        }
-      })
-}
+        });
+      } else {
+        Like.destroy({
+          where: { postId: req.params.id },
+        })
+          .then(() => {
+            console.log(" Le like a été supprimé ");
+          })
+          .catch((err) => {
+            const message = "Impossible de supprimer le like";
+            res.status(400).json({ message, err });
+          });
+        Comment.destroy({
+          where: { postId: req.params.id },
+        })
+          .then((_) => {
+            console.log("Les commentaires ont été supprimés");
+          })
+          .catch((err) => {
+            const message = "Impossible de supprimer les messages";
+            res.status(400).json({ message }, err);
+          });
+        Post.destroy({
+          where: { id: req.params.id },
+        })
+          .then((_) => {
+            const message = `La publication avec l'id:"${req.params.id}" a bien été supprimé.`;
+            res.json({ message });
+          })
+          .catch((error) => {
+            const message = `La publication n'a pas pu être supprimé . Réessayez dans quelques instants.`;
+            res.status(500).json({ message, data: error });
+          });
+      }
+    }
+  });
+};

@@ -2,7 +2,7 @@ const express = require("express");
 const { Post, Comment, User } = require("../db/sequelize");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const { log } = require("console");
+
 
 exports.createComment = (req, res) => {
   let postId = req.params.postId;
