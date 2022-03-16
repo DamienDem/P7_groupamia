@@ -13,8 +13,9 @@ const Wall = () => {
                 withCredentials: true
             })
             .then((res) => {
-                setAllPosts(res.data.data)
-                console.log(res.data.data);
+                setAllPosts(res.data.data.sort((b,a) => {
+                    return a.id - b.id;
+                }))
             })
             .catch((err) => console.log("impossible de récupérer les publications err:"+err))
         }
