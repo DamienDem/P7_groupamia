@@ -6,7 +6,7 @@ import { CommentOutlined,EditOutlined,PictureOutlined } from "@ant-design/icons"
 import CardComment from "./CardComment";
 
 
-const Card = ({post}) => {
+const Card = ({post ,getAllPosts }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [usersData, setUsersData] = useState(null);
     const [userId, setUserId] = useState(null);
@@ -71,6 +71,7 @@ const Card = ({post}) => {
                   })
                   .then((res) => {
                       console.log(res);
+                      getAllPosts();
                   })
                   .catch((err) => { console.log('erreur modification', err);})
             
@@ -169,9 +170,9 @@ const Card = ({post}) => {
                     </div>
             )}
             {userId === post.userId && (
-                <EditOutlined onClick={() => setIsUpdated(!isUpdated)}/>
+                <EditOutlined onClick={() => setIsUpdated(!isUpdated)} />
             )}
-            {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteCard post={post} />}
+            {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteCard post={post} getAllPosts={getAllPosts} />}
             </div>
            <Advice post={post}/>
            <CommentOutlined onClick={(e) => { setShowComments(!showComments)}} />

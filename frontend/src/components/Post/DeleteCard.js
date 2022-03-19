@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { DeleteOutlined } from "@ant-design/icons";
 
-const DeleteCard = ({ post }) => {
+const DeleteCard = ({ post, getAllPosts }) => {
 
     const deletePost = async () => {
         await axios({
@@ -12,7 +12,7 @@ const DeleteCard = ({ post }) => {
         })
         .then((res) => {
             console.log(res.data);
-            window.location = "/";
+           getAllPosts()
         })
         .catch((err) => { 
             console.log("suppression échouée", err);
