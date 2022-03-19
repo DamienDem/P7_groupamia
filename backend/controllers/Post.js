@@ -64,7 +64,10 @@ exports.getOnePost = (req, res) => {
 };
 
 exports.updatePost = (req, res) => {
-  const attachement = req.body.attachement;
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const userId = decodedToken.id;
+
   const postObject = req.file
     ? {
         ...req.body,
@@ -74,7 +77,7 @@ exports.updatePost = (req, res) => {
       }
     : { ...req.body };
 
-  User.findByPk(req.body.UserId)
+  User.findByPk(userId)
     .then((user) => {
       if (!user) {
         const message = "L'utilisateur demandé n'existe pas .";
@@ -85,7 +88,7 @@ exports.updatePost = (req, res) => {
             const message = `La publication demandé n'existe pas .`;
             return res.status(404).json({ message });
           }
-          if (attachement !== null) {
+          if (post.attachement) {
             const filename = post.attachement.split("/images/")[1];
             fs.unlink(`images/${filename}`, () => {
               post.update(postObject, {

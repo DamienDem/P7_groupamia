@@ -11,7 +11,7 @@ const Advice = ({ post }) => {
   const [Likes, setLikes] = useState(0);
   const [Dislikes, setDislikes] = useState(0);
   const [userId, setUserId] = useState();
-  const [LikeAction, setLikeAction] = useState("liked");
+  const [LikeAction, setLikeAction] = useState(null);
   const [DislikeAction, setDislikeAction] = useState(null);
 
   const fetchToken = async () => {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined,PictureOutlined } from "@ant-design/icons";
 
 const EditAndDeleteComment = ({ userId, isAdmin, comment, getAllComments}) => {
   const [edit, setEdit] = useState(false);

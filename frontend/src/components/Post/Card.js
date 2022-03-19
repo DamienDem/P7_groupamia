@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"
 import Advice from "./Advice";
 import DeleteCard from "./DeleteCard";
-import { CommentOutlined,EditOutlined} from "@ant-design/icons";
+import { CommentOutlined,EditOutlined,PictureOutlined } from "@ant-design/icons";
 import CardComment from "./CardComment";
 
 
@@ -12,8 +12,11 @@ const Card = ({post}) => {
     const [userId, setUserId] = useState(null);
     const [isAdmin, setIsAdmin] =useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
-    const [textUpdate, setTextUpdate] = useState(null);
+    const [textUpdate, setTextUpdate] = useState(post.content);
     const [showComments, setShowComments] = useState(false);
+    const [imageUpdate, setImageUpdate] = useState(null);
+    const [postPicture, setPostPicture] = useState(post.attachement);
+ 
     
     const dateParser = (num) => {
         let options = {
@@ -58,25 +61,39 @@ const Card = ({post}) => {
            .catch((err) => { console.log('fetchUsersData:'+err);})
           }
        
-          const updatePost = async () => {
-              if (textUpdate){
+          const updatePost = async (data) => {
+             
                   await axios({
                       method:"put",
                       url: "http://localhost:3000/post/"+ post.id,
-                      data: {
-                          ...post,
-                          content:textUpdate, 
-                          UserId: userId
-                      },
+                      data :data,
                       withCredentials: true
                   })
                   .then((res) => {
                       console.log(res);
                   })
                   .catch((err) => { console.log('erreur modification', err);})
-              }
+            
               setIsUpdated(false)
           }
+
+          const handlePicture = (e) => {
+            setPostPicture(URL.createObjectURL(e.target.files[0]));
+            setImageUpdate(e.target.files[0]);
+            console.log(e.target.files[0]);
+          }; 
+
+          const handlePost = async () => {
+            if (textUpdate || imageUpdate ) {
+              const data = new FormData();
+              data.append('content', textUpdate);
+              data.append("image", imageUpdate);
+              console.log(imageUpdate);
+               await updatePost(data);
+            } else {
+              alert("Veuillez entrer un message")
+            }
+          };
 
       useEffect(() => {
           fetchToken()
@@ -121,17 +138,33 @@ const Card = ({post}) => {
             </div>
             <div className="post__container--image">
                 <h2> {post.title} </h2>
-            <img src= {post.attachement} alt=""/>
+            <img src= {postPicture} alt=""/>
             </div>
             <div className="post__container--content">
             {isUpdated === false && <p>{post.content}</p>}
             {isUpdated && (
                 <div className="post__container--update">
-                    <textarea defaultValue={post.content}
+                    <textarea 
+                    name="content"
+                    id="message"
+                    defaultValue={post.content}
                     onChange={(e) => setTextUpdate(e.target.value)}
                     />
                     <div className="post__container--button">
-                    <button className="button" onClick={updatePost}> Valider </button>
+                    <div>
+                  <>
+                  <PictureOutlined />
+                    <input
+                      type="file"
+                      id="file-upload"
+                      name="image"
+                      accept=".jpg, .jpeg, .png"
+                      onChange={(e) => handlePicture(e)}
+
+                    />
+                  </>
+              </div>
+                    <button className="button" onClick={handlePost}> Valider </button>
                     </div>
                     </div>
             )}

@@ -35,7 +35,6 @@ const PostForm = ({userId}) => {
               withCredentials: true
           })
           .then((res) => {
-              console.log(res.data.data);
               setUserData(res.data.data)
           })
           .catch((err) => {
