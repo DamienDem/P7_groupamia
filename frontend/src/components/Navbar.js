@@ -4,7 +4,7 @@ import axios from "axios";
 import cookie from "js-cookie";
 
 
-const Navbar = () => {
+const Navbar = ({connectionChoice}) => {
   const [userId, setUserId] = useState();
   const [userData, setUserData] = useState([]);
 
@@ -25,20 +25,23 @@ const Navbar = () => {
       })
       .catch((err) => console.log("Pas de token:" + err));
   };
-  const getUser = async (userId) => {
+  const getUser = async () => {
     await fetchToken();
     await axios({
       method: "get",
-      url: "http://localhost:3000/" + userId,
+      url: "http://localhost:3000/user/" + userId,
       withCredentials: true,
     }).then((res) => {
+      console.log(res.data);
       setUserData(res.data.data);
+    })
+    .catch((err) => {
+      console.log('impossible de récupérer les données utilisateur'+ err);
     });
   };
   useEffect(() => {
-    fetchToken();
-    getUser(userId);
-  }, [userId]);
+    getUser();
+  }, []);
 
   const logout = async () => {
     await axios({
@@ -75,7 +78,7 @@ const Navbar = () => {
                   alt="profil"
                 />
               </NavLink>
-              <NavLink exact ='true' to="/profil">
+              <NavLink exact ='true' to="/auth">
                 <div onClick={logout} className="logout button"> Se déconnecter </div>
               </NavLink>
             </li>
@@ -84,16 +87,16 @@ const Navbar = () => {
       ) : (
         <nav>
           <ul>
-            <img className="logo" src="./images/icon-left-font.png" alt="logo Groupomania" />
-            <li >
-              <NavLink exact ='true' to="/auth">
-                Se connecter
-              </NavLink>
+          <img
+                className="logo"
+                  src="./images/icon-left-font.png"
+                  alt="logo Groupomania"
+                />
+            <li onClick={connectionChoice} id="signIn"> 
+                Se connecter 
             </li>
-            <li>
-              <NavLink exact ='true' to="/auth">
+            <li onClick={connectionChoice} id='signUp'> 
                 S'inscrire
-              </NavLink>
             </li>
           </ul>
         </nav>
