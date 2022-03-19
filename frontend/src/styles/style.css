@@ -23,18 +23,24 @@ img {
 }
 
 nav {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   background: #ffffff;
   margin: 5px 0;
 }
 nav img {
-  width: 100%;
-  z-index: -1;
   max-height: 50px;
   margin-right: 10px;
 }
 nav .logo {
   min-width: 200px;
+}
+nav #navbar--home {
+  width: 100%;
+}
+nav #navbar--auth {
+  width: 40%;
 }
 nav ul {
   display: flex;
@@ -43,15 +49,15 @@ nav ul {
 nav ul li {
   display: flex;
   align-items: center;
-  margin: 0 10px;
-  max-height: 40px;
 }
-nav ul li .button {
+nav ul .button {
+  display: flex;
+  align-items: center;
   background: #d05059;
   color: #ffffff;
   min-height: 40px;
   border-radius: 15px;
-  padding: 10px;
+  padding: 0 10px;
   cursor: pointer;
 }
 nav .profilPicture {
@@ -60,18 +66,6 @@ nav .profilPicture {
   height: 50px;
   width: 50px;
   cursor: pointer;
-}
-nav .publication {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 15px;
-  height: 45px;
-  width: 50%;
-  background: #d05059;
-  color: #ffffff;
-  cursor: pointer;
-  margin: 0 15px;
 }
 
 .containerForm {

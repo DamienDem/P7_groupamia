@@ -41,7 +41,7 @@ const Navbar = ({connectionChoice}) => {
   };
   useEffect(() => {
     getUser();
-  }, []);
+  }, [userId]);
 
   const logout = async () => {
     await axios({
@@ -59,16 +59,14 @@ const Navbar = ({connectionChoice}) => {
     <div className="nav-container">
       {userId ? (
         <nav>
-          <ul>
-            <li>
-              <NavLink exact ='true' to="/">
+          <NavLink exact= 'true' to="/">
                 <img
                 className="logo"
                   src="./images/icon-left-font.png"
                   alt="logo Groupomania"
                 />
-              </NavLink>
-            </li>
+          </NavLink>
+          <ul id="navbar--home">
             <li>Bienvenue {userData.firstName}</li>
             <li>
             <NavLink exact ='true' to="/profil">
@@ -86,16 +84,16 @@ const Navbar = ({connectionChoice}) => {
         </nav>
       ) : (
         <nav>
-          <ul>
           <img
                 className="logo"
                   src="./images/icon-left-font.png"
                   alt="logo Groupomania"
                 />
-            <li onClick={connectionChoice} id="signIn"> 
+          <ul id="navbar--auth">
+            <li className="button" onClick={connectionChoice} id="signIn"> 
                 Se connecter 
             </li>
-            <li onClick={connectionChoice} id='signUp'> 
+            <li className="button" onClick={connectionChoice} id='signUp'> 
                 S'inscrire
             </li>
           </ul>
