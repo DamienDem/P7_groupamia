@@ -1,6 +1,8 @@
-@import "./base/base.scss";
 @import "./utils/variables";
+@import "./base/base.scss";
 @import "./components/navbar.scss";
 @import "./components/log.scss";
 @import "./components/post.scss";
-@import "./components/profil.scss"
+@import "./components/profil.scss";
+@import "./components/profilPicture.scss";
+@import "./components/PostForm.scss"

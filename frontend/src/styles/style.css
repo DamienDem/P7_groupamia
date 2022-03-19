@@ -16,6 +16,36 @@ img {
   font: 900;
 }
 
+textarea {
+  resize: none;
+  width: 98%;
+  min-height: 80px;
+  padding: 5px 10px;
+}
+
+input[type=file] {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  transform: translate(-16px, -3px);
+  opacity: 0;
+  cursor: pointer;
+}
+input[type=file]::-webkit-file-upload-button {
+  cursor: pointer;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  background: #d05059;
+  color: #ffffff;
+  min-height: 40px;
+  border-radius: 15px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
 .nav-container {
   width: 100%;
   background: #ffffff;
@@ -58,13 +88,6 @@ nav ul .button {
   min-height: 40px;
   border-radius: 15px;
   padding: 0 10px;
-  cursor: pointer;
-}
-nav .profilPicture {
-  background-color: none;
-  border-radius: 45px;
-  height: 50px;
-  width: 50px;
   cursor: pointer;
 }
 
@@ -256,6 +279,60 @@ nav .profilPicture {
 }
 .profil__container__item span {
   margin: 15px 0;
+}
+
+.profilPicture {
+  background-color: none;
+  border-radius: 45px;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+.post-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 10px;
+  padding: 0 15px;
+  border: 1px solid black;
+}
+.post-container--user {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+.post-container--user h3 {
+  margin: 0 10px;
+}
+.post-container__form {
+  margin: 10px;
+  width: 100%;
+}
+.post-container__form--card {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+.post-container__form--card p {
+  margin: 10px 0;
+}
+.post-container__form--card img {
+  width: 100%;
+  padding: 10px;
+}
+.post-container__form__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+}
+.post-container__form__footer--button {
+  display: flex;
+}
+.post-container__form__footer--button button {
+  margin: 0 15px;
 }
 
 /*# sourceMappingURL=style.css.map */

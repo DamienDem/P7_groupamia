@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Navbar from "../components/Navbar"
 import Wall from "../components/Wall";
-import PostForm from "../components/Post/PostForm";
 import axios from "axios";
 
 
@@ -29,9 +28,6 @@ const Home = () => {
     <div className="home">
       <Navbar/>
       <div className="main">
-      <div>
-        <PostForm userId={userId}/> 
-        </div>
         <Wall/>
       </div>
     </div>

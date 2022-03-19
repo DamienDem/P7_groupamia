@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
-import Card from './Post/Card'
+import Card from './Post/Card';
+import PostForm from "./Post/PostForm";
 
 const Wall = () => {
     const [allPosts, setAllPosts] = useState([]);
@@ -26,6 +27,9 @@ const Wall = () => {
 
 return (
     <div>
+        <div>
+        <PostForm getAllPosts={getAllPosts}/> 
+        </div>
         <ul>
             {allPosts.map((post) => {
                 console.log(post.userId);
