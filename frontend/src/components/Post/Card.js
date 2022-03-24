@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"
-import Advice from "./Advice";
+
 import DeleteCard from "./DeleteCard";
-import { CommentOutlined,EditOutlined,PictureOutlined } from "@ant-design/icons";
+import { EditOutlined,PictureOutlined } from "@ant-design/icons";
 import CardComment from "./CardComment";
 
 
@@ -13,10 +13,8 @@ const Card = ({post ,getAllPosts }) => {
     const [isAdmin, setIsAdmin] =useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [textUpdate, setTextUpdate] = useState(post.content);
-    const [showComments, setShowComments] = useState(false);
     const [imageUpdate, setImageUpdate] = useState(null);
     const [postPicture, setPostPicture] = useState(post.attachement);
- 
     
     const dateParser = (num) => {
         let options = {
@@ -95,6 +93,10 @@ const Card = ({post ,getAllPosts }) => {
               alert("Veuillez entrer un message")
             }
           };
+ 
+          
+       
+        
 
       useEffect(() => {
           fetchToken()
@@ -103,7 +105,8 @@ const Card = ({post ,getAllPosts }) => {
             setIsLoading(false);
             
         } else {
-            fetchUsersData()
+            fetchUsersData();
+          
         }
 
     }, [usersData]);
@@ -117,8 +120,9 @@ const Card = ({post ,getAllPosts }) => {
                 <span> chargement</span>
             ):(
             <>
-            <div className="post__container--owner">
-                <img src={
+            <div className="post__container__owner">
+              <div className= 'post__container__owner--user'>
+              <img src={
                     (usersData !== null) &&
                     usersData.map((user) => {
                  if(user.id === post.userId) return user.picture
@@ -135,14 +139,20 @@ const Card = ({post ,getAllPosts }) => {
                  if(user.id === post.userId) return user.name
                  else return null
                 }).join('')}  </span>
+  </div>    
                 <span>{dateParser(post.created)} </span>
             </div>
-            <div className="post__container--image">
-                <h2> {post.title} </h2>
-            <img src= {postPicture} alt=""/>
+            <div className="post__container__owner--editButton">
+
+            {userId === post.userId && (
+                <EditOutlined onClick={() => setIsUpdated(!isUpdated)} />
+            )}
+            {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteCard post={post} getAllPosts={getAllPosts} />}
             </div>
             <div className="post__container--content">
             {isUpdated === false && <p>{post.content}</p>}
+           
+            </div>
             {isUpdated && (
                 <div className="post__container--update">
                     <textarea 
@@ -169,14 +179,14 @@ const Card = ({post ,getAllPosts }) => {
                     </div>
                     </div>
             )}
-            {userId === post.userId && (
-                <EditOutlined onClick={() => setIsUpdated(!isUpdated)} />
-            )}
-            {((userId === post.userId) || ((isAdmin && userId) !== post.userId)) && <DeleteCard post={post} getAllPosts={getAllPosts} />}
+            <div className="post__container--image">
+                <h2> {post.title} </h2>
+            <img src= {postPicture} alt=""/>
             </div>
-           <Advice post={post}/>
-           <CommentOutlined onClick={(e) => { setShowComments(!showComments)}} />
-           {showComments && <CardComment post={post} usersData={usersData} userId={userId} isAdmin= {isAdmin} />}
+            <div>
+          <CardComment post={post} usersData={usersData} userId={userId} isAdmin= {isAdmin} />
+
+            </div>
             </>
             )}
         </li>

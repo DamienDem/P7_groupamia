@@ -12,7 +12,6 @@ exports.createPost = (req, res) => {
         const message = `L'utilisateur n'existe pas`;
         return res.status(404).json({ message });
       }
-
       const imageURL = req.file
         ? {
             ...req.body,
@@ -22,7 +21,6 @@ exports.createPost = (req, res) => {
             }`,
           }
         : { ...req.body, userId: req.params.id };
-
       console.log(req.params.id, imageURL);
       Post.create(imageURL).then((newPost) => {
         const message = `La publication est postée`;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const SignUp = () => {
@@ -8,21 +8,39 @@ const SignUp = () => {
   const [firstName, setFirstName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const emailError = document.querySelector(".email.error");
+  const passwordError = document.querySelector(".password.error");
+  const confirmPasswordError = document.querySelector(
+    ".confirmPassword.error"
+  );
+  
+  const regexPassword = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/);
+  const testPassword = regexPassword.test(password);
+
+  const regexEmail = new RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
+  const testEmail = regexEmail.test(email);
+
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const emailError = document.querySelector(".email.error");
-    const passwordError = document.querySelector(".password.error");
-    const confirmPasswordError = document.querySelector(
-      ".confirmPassword.error"
-    );
-    const nameError = document.querySelector(".name.error");
-    const firstNamedError = document.querySelector(".firstName.error");
 
-    if (password !== confirmPassword) {
-
-      confirmPasswordError.innerHTML = "Les mots de passe ne correspondent pas";
-
-    } else {
+ if(password !== confirmPassword || !testEmail ||  !testPassword) {
+  if (password !== confirmPassword) {
+    confirmPasswordError.innerHTML = "Les mots de passe ne correspondent pas";
+  } else {
+   confirmPasswordError.innerHTML = "";
+  }
+  if(!testEmail){
+    emailError.innerHTML ="email incorrect"
+  } else {
+   emailError.innerHTML =""
+  }
+  if(!testPassword){
+    passwordError.innerHTML = "Le mot de passe doit contenir au moin un caratére spéciale, une majuscule, une minuscule et faire 8 caractéres"
+  } else {
+   passwordError.innerHTML = ""
+  }
+ }
+     else {
       axios({
         method: "post",
         url: "http://localhost:3000/signup",
@@ -35,30 +53,20 @@ const SignUp = () => {
         credentials: true,
       })
         .then((res) => {
-          if (res.data.errors) {
-            emailError.innerHTML = res.data.errors.email;
-            passwordError.innerHTML = res.data.errors.password;
-            nameError.innerHTML = res.data.errors.name;
-            firstNamedError.innerHTML = res.data.errors.firstName;
-          } else {
+          console.log(res);
             axios({
               url:`http://localhost:3000/login`,
               method: "POST",
               data: { email, password },
-              headers: { "Content-Type": "application/json" },
               credentials: true,
             })
             .then((res) => {
-              if (res.data.errors) {
-                emailError.innerHTML = res.data.errors.email;
-                passwordError.innerHTML = res.data.errors.password;
-              } else {
                 window.location = "/";
-              }
           })
-        }})
+        })
         .catch((err) => {
           console.log(err);
+          emailError.innerHTML ="l'email est déja utilisé"
         })   
     }
   };
@@ -80,7 +88,6 @@ const SignUp = () => {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <div className="name error"></div>
       <label htmlFor="firstName"> Prénom </label>
       <input
         type="text"
@@ -88,7 +95,6 @@ const SignUp = () => {
         value={firstName}
         onChange={(e) => setFirstName(e.target.value)}
       />
-      <div className="firstName error"></div>
       <label htmlFor="password"> Mot de passe</label>
       <input
         name="password"
@@ -97,7 +103,7 @@ const SignUp = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <div className="password error"></div>
-      <label htmlFor="confirmPassword"> Mot de passe</label>
+      <label htmlFor="confirmPassword">Confirmation du mot de passe</label>
       <input
         name="confirmPassword"
         className="confirmPassword"

@@ -18,7 +18,7 @@ img {
 
 textarea {
   resize: none;
-  width: 98%;
+  width: 100%;
   min-height: 80px;
   padding: 5px 10px;
 }
@@ -44,6 +44,11 @@ button {
   border-radius: 15px;
   padding: 0 10px;
   cursor: pointer;
+}
+
+.error {
+  color: red;
+  margin: 5px 0;
 }
 
 .nav-container {
@@ -128,70 +133,95 @@ nav ul .button {
   background: #f3f3f3;
 }
 .post__container {
-  max-width: 70%;
+  max-width: 90%;
   border: 1px solid #f3f3f3;
   border-radius: 15px;
   padding: 15px 30px;
-  margin: 30px 0;
+  margin: 30px 10px;
   background: #ffffff;
 }
-.post__container img {
-  max-height: 400px;
-  width: 100%;
-  object-fit: contain;
-}
-.post__container--owner {
+.post__container--button {
   display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
-.post__container--owner img {
-  width: 50px;
-  height: 50px;
-  border-radius: 45px;
-  margin-right: 15px;
+  justify-content: space-between;
+  margin: 10px 0;
 }
 .post__container__advice {
   display: flex;
 }
-.post__container__advice li {
+.post__container__advice--item {
   display: flex;
   align-items: center;
   justify-content: space-around;
   margin: 15px;
   padding: 5px;
   border: 1px solid #f3f3f3;
-  width: 100%;
-  max-width: 80px;
+  max-height: 50px;
 }
-.post__container__advice svg {
+.post__container__advice--item svg {
+  margin: 0 10px;
+}
+.post__container img {
+  max-height: 400px;
+  width: 100%;
+  object-fit: contain;
+}
+.post__container--content {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.post__container__owner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  width: 100%;
+}
+.post__container__owner--user {
+  display: flex;
+  align-items: center;
+}
+.post__container__owner--editButton {
+  display: flex;
+  justify-content: flex-end;
+}
+.post__container__owner--editButton svg {
+  margin: 0 10px;
+}
+.post__container__owner img {
+  width: 50px;
+  height: 50px;
+  border-radius: 45px;
+  margin-right: 15px;
+}
+.post__container svg {
   width: 30px;
   height: 30px;
   cursor: pointer;
 }
-.post__container__comment {
+.post__comment {
   display: flex;
   justify-content: space-between;
 }
-.post__container__comment--profil img {
+.post__comment--profil img {
   height: 50px;
   width: 50px;
   border-radius: 45px;
 }
-.post__container__comment form {
+.post__comment form {
   width: 100%;
   margin-left: 15px;
 }
-.post__container__comment form input[type=text] {
+.post__comment form input[type=text] {
   display: flex;
   padding: 5px;
   height: 50px;
   width: 100%;
 }
-.post__container__comment form .form--submit {
+.post__comment form .form--submit {
   margin: 15px;
 }
-.post__container__comment form .form--submit input {
+.post__comment form .form--submit input {
   height: 40px;
   width: 100px;
   margin: 0 15px;
@@ -295,7 +325,7 @@ nav ul .button {
   flex-direction: column;
   width: 90%;
   margin: 0 10px;
-  padding: 0 15px;
+  padding: 10px 20px;
   border: 1px solid black;
 }
 .post-container--user {
@@ -333,6 +363,102 @@ nav ul .button {
 }
 .post-container__form__footer--button button {
   margin: 0 15px;
+}
+
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+}
+.comment-container__item {
+  margin: 10px 0;
+  width: 100%;
+}
+.comment-container__item--header {
+  display: flex;
+  justify-content: space-between;
+}
+.comment-container__item--userData {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.comment-container__item--userData img {
+  max-height: 50px;
+  margin-right: 10px;
+  border-radius: 90%;
+}
+.comment-container__item--userData h3 {
+  margin: 0 5px;
+}
+.comment-container__item--content {
+  margin: 10px;
+  border: 2px solid black;
+  border-radius: 15px;
+  background: #d05059;
+  color: #ffffff;
+  padding: 10px;
+  min-height: 100px;
+}
+.comment-container__item--updateForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 15px 0;
+}
+.comment-container__item--updateForm .editAndDelete-icon {
+  display: flex;
+}
+.comment-container__item--updateForm .editAndDelete-icon svg {
+  margin: 0 10px;
+}
+.comment-container__item--updateForm form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+}
+.comment-container__item--updateForm form input[type=text] {
+  min-height: 100px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  width: 100%;
+}
+.comment-container__item--updateForm form input[type=submit] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d05059;
+  color: #ffffff;
+  min-height: 40px;
+  border-radius: 15px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.comment-container__item--commentForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+}
+.comment-container__item--commentForm input[type=text] {
+  min-height: 100px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  width: 100%;
+}
+.comment-container__item--commentForm input[type=submit] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d05059;
+  color: #ffffff;
+  min-height: 40px;
+  border-radius: 15px;
+  padding: 0 10px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

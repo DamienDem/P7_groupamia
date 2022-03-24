@@ -1,0 +1,95 @@
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+  &__item {
+    margin: 10px 0;
+    width: 100%;
+    &--header {
+      display: flex;
+      justify-content: space-between;
+    }
+    &--userData {
+      display: flex;
+      flex-wrap: nowrap;
+      & img {
+        max-height: 50px;
+        margin-right: 10px;
+        border-radius: 90%;
+      }
+      & h3 {
+        margin: 0 5px;
+      }
+    }
+    &--content {
+      margin: 10px;
+      border: 2px solid black;
+      border-radius: $boderRadius;
+      background: $color1;
+      color: $color4;
+      padding: 10px;
+      min-height: 100px;
+    }
+    &--updateForm {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin: 15px 0;
+      & .editAndDelete-icon {
+        display: flex;
+        & svg {
+          margin: 0 10px;
+        }
+      }
+      & form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+        & input[type="text"] {
+          min-height: 100px;
+          border-radius: $boderRadius;
+          margin-bottom: 15px;
+          padding: 10px;
+          width: 100%;
+        }
+        & input[type="submit"] {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: $color1;
+          color: $color4;
+          min-height: 40px;
+          border-radius: $boderRadius;
+          padding: 0 10px;
+          cursor: pointer;
+        }
+      }
+    }
+    &--commentForm {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+        & input[type="text"] {
+            min-height: 100px;
+            border-radius: $boderRadius;
+            margin-bottom: 15px;
+            padding: 10px;
+            width: 100%;
+          }
+          & input[type="submit"] {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: $color1;
+            color: $color4;
+            min-height: 40px;
+            border-radius: $boderRadius;
+            padding: 0 10px;
+            cursor: pointer;
+          }
+    }
+  }
+}

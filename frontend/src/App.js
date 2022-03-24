@@ -13,9 +13,9 @@ function App() {
      
         <div>
           <Routes>
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/profil" element={<Profil />} />
+            <Route exact= 'true' path="/auth" element={<Auth />} />
+            <Route exact= 'true' path="/" element={<Home />} />
+            <Route exact= 'true' path="/profil" element={<Profil />} />
             <Route element={<PageNotFound />} />
           </Routes>
         </div>

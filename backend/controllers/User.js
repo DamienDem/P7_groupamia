@@ -5,33 +5,47 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 
 exports.signup = (req, res) => {
-  User.findOne({ where: { email: req.body.email } }).then((user) => {
-    if (!user) {
-      bcrypt
-        .hash(req.body.password, 10)
-        .then((hash) => {
-          User.create({
-            name: req.body.name,
-            firstName: req.body.firstName,
-            email: req.body.email,
-            password: hash,
-            picture: `http://localhost:3000/images/default_profil_picture`,
-            isAdmin: false,
+
+  const password = req.body.password;
+  const regexPassword = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/);
+  const testPassword = regexPassword.test(password);
+
+  const email = req.body.email; 
+  const regexEmail = new RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
+  const testEmail = regexEmail.test(email);
+
+  if(testEmail && testPassword) {
+    User.findOne({ where: { email: req.body.email } }).then((user) => {
+      if (!user) {
+        bcrypt
+          .hash(req.body.password, 10)
+          .then((hash) => {
+            User.create({
+              name: req.body.name,
+              firstName: req.body.firstName,
+              email: req.body.email,
+              password: hash,
+              picture: `http://localhost:3000/images/default_profil_picture.png`,
+              isAdmin: false,
+            });
+          })
+          .then((_) => {
+            const message = `L'utilisateur ${req.body.name} ${req.body.firstName} a bien été créé .`;
+            res.json({ message });
+          })
+          .catch((err) => {
+            const message = `impossible de créer l'utilisateur:"${req.body.name} ${req.body.firstName}" `;
+            res.status(400).json({ message, err });
           });
-        })
-        .then((_) => {
-          const message = `L'utilisateur ${req.body.name} ${req.body.firstName} a bien été créé .`;
-          res.json({ message });
-        })
-        .catch((err) => {
-          const message = `impossible de créer l'utilisateur:"${req.body.name} ${req.body.firstName}" `;
-          res.status(400).json({ message, err });
-        });
-    } else {
-      const message = `L'utilisateur avec l'email:"${req.body.email}" existe déja. `;
-      return res.status(400).json({ message });
-    }
-  });
+      } else {
+        const message = `L'utilisateur avec l'email:"${req.body.email}" existe déja. `;
+        return res.status(400).json({ message });
+      }
+    });
+  } else {
+    const message = "Mot de passe ou email incorrect"
+    return res.status(400).json({message})
+  }
 };
 
 exports.login = (req, res) => {
@@ -45,7 +59,7 @@ exports.login = (req, res) => {
       .compare(req.body.password, user.password)
       .then((valid) => {
         if (!valid) {
-          const message = "Mot de passe ou email est incorrect ! ";
+          const message = "Mot de passe est incorrect ! ";
           return res.status(401).json({ message });
         }
         const token = jwt.sign(

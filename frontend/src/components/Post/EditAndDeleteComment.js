@@ -45,24 +45,10 @@ const EditAndDeleteComment = ({ userId, isAdmin, comment, getAllComments}) => {
   };
 
   return (
-    <div>
-      {userId === comment.userId && edit === false && (
+    <div className="comment-container__item--updateForm">
+      <div className="editAndDelete-icon">
+      {userId === comment.userId && (
         <EditOutlined onClick={() => setEdit(!edit)} />
-      )}
-      {userId === comment.userId && edit && (
-        <form action="" onSubmit={updateComment} className="edit-comment-form">
-          <label htmlFor="text" onClick={() => setEdit(!edit)}>
-            <EditOutlined />
-          </label>
-          <br />
-          <input
-            type="text"
-            name="text"
-            onChange={(e) => setText(e.target.value)}
-            defaultValue={comment.content}
-          />
-          <input type="submit" value="Valider modification" />
-        </form>
       )}
       {(isAdmin || userId === comment.userId) && (
         <div
@@ -78,6 +64,22 @@ const EditAndDeleteComment = ({ userId, isAdmin, comment, getAllComments}) => {
         >
           <DeleteOutlined />
         </div>
+      )}
+
+      </div>
+      {userId === comment.userId && edit && (
+        <form action="" onSubmit={updateComment} className="edit-comment-form">
+          <label htmlFor="text" onClick={() => setEdit(!edit)}>
+          </label>
+          <br />
+          <input
+            type="text"
+            name="text"
+            onChange={(e) => setText(e.target.value)}
+            defaultValue={comment.content}
+          />
+          <input className="button" type="submit" value="Valider modification" />
+        </form>
       )}
     </div>
   );

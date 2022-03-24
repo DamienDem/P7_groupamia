@@ -21,15 +21,16 @@ const Login = () => {
     })
       .then((res) => {
         console.log(res);
-        if (res.data.errors) {
-          emailError.innerHTML = res.data.errors.email;
-          passwordError.innerHTML = res.data.errors.password;
-        } else {
           window.location = "/";
-        }
       })
       .catch((err) => {
-        console.log(err);
+        if(err.response.status == 401){
+          passwordError.innerHTML = err.response.data.message
+        } else if (err.response.status == 404) {
+          emailError.innerHTML = err.response.data.message
+        } else {
+          console.log(err.response.data.message);
+        }
       });
   };
 

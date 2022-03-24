@@ -66,7 +66,7 @@ const Navbar = ({connectionChoice}) => {
                   alt="logo Groupomania"
                 />
           </NavLink>
-          <ul id="navbar--home">
+          <ul exact= 'true' id="navbar--home">
             <li>Bienvenue {userData.firstName}</li>
             <li>
             <NavLink exact ='true' to="/profil">

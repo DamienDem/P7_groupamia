@@ -18,7 +18,7 @@ img {
 
 textarea {
   resize: none;
-  width: 98%;
+  width: 100%;
   min-height: 80px;
   padding: 5px 10px;
 }
@@ -35,7 +35,6 @@ input[type="file"]{
   }
 }
  button {
-
    display: flex;
    align-items: center;
    background: $color1;
@@ -44,4 +43,8 @@ input[type="file"]{
    border-radius: $boderRadius;
    padding: 0 10px;
    cursor: pointer;
+ }
+ .error {
+   color: red;
+   margin: 5px 0;
  }

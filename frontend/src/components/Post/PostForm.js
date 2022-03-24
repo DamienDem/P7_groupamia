@@ -84,7 +84,7 @@ const PostForm = ({ getAllPosts }) => {
   return (
     <div className="post-container">
       <>
-        <NavLink exact to="/profil">
+        <NavLink exact= 'true' to="/profil">
           <div className="post-container--user">
             <img
               className="profilPicture"
