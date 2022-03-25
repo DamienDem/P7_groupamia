@@ -51,6 +51,10 @@ button {
   margin: 5px 0;
 }
 
+h2 {
+  margin-bottom: 10px;
+}
+
 .nav-container {
   width: 100%;
   background: #ffffff;

@@ -1,13 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useParams } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Profil from "./pages/Profil";
 import PageNotFound from "./pages/Page-not-found";
-import { useDispatch } from "react-redux";
 
 function App() {
-
+  let {id} = useParams()
   return (
     <Router>
      

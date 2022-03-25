@@ -112,6 +112,7 @@ exports.getOneUser = (req, res) => {
       return res.status(400).json({ message });
     }
     const userData = {
+      id:user.id,
       email: user.email,
       firstName: user.firstName,
       name: user.name,

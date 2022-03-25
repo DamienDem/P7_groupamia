@@ -6,6 +6,7 @@ import { LikeOutlined,
   LikeFilled,
   DislikeFilled,
   CommentOutlined} from "@ant-design/icons";
+  import { Link } from "react-router-dom";
 
 const CardComment = ({ post, usersData, isAdmin, userId }) => {
   const [text, setText] = useState("");
@@ -300,6 +301,8 @@ const onDisLike = async () => {
             return (
               <div className="comment-container__item" key={comment.id}>
                 <div className="comment-container__item--header">
+                <Link to={"/profil"} state={{ id: post.userId }}>
+
                   <div className="comment-container__item--userData" >
                   <img
                     src={
@@ -333,6 +336,7 @@ const onDisLike = async () => {
                       </h3>
 
                   </div>
+                </Link>
                       <span>{dateParser(comment.created)}</span>
                 </div>
                 <div className="comment-container__item--content">

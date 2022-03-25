@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 const UpdateProfil = () => {
@@ -6,17 +7,18 @@ const UpdateProfil = () => {
   const [userData, setUserData] = useState([]);
   const [image, setImage] = useState();
   const [description, setDescription] = useState("");
+  const location = useLocation();
 
-  const getUser = async (userId) => {
+  const getUser = async () => {
     await fetchToken();
     await axios({
       method: "get",
-      url: "http://localhost:3000/user/" + userId,
+      url: "http://localhost:3000/user/"+location.state.id,
       withCredentials: true,
     })
       .then((res) => {
         setUserData(res.data.data);
-        console.log(res.data.data);
+        console.log(location);
       })
       .catch((err) => console.log('error:'+err))
   };
@@ -34,8 +36,7 @@ const UpdateProfil = () => {
   };
 
   useEffect(() => {
-    fetchToken();
-    getUser(userId);
+    getUser();
   }, [userId]);
 
   const updateUser = async (data) => {
@@ -74,6 +75,7 @@ const handleImage = () => {
         <div className="profil__container__item profil__container--picture">
           <h2> Photo de profil </h2>
           <img src={userData.picture} alt="profil"></img>
+          {userData.id === userId && 
           <form action="" onSubmit={handleImage} className="upload-picture">
             <label htmlFor="file" className="button"> Changer d'image</label>
             <input
@@ -85,16 +87,20 @@ const handleImage = () => {
             />
             <input type="submit" className="button" value="envoyer" />
           </form>
+          }
         </div>
         <div className="profil__container__item profil__container--picture">
           <label htmlFor="description"> description </label>
           <textarea
             type="text"
             name="description"
+            readOnly={!(userData.id === userId)}
             defaultValue={userData.description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
+          {userData.id === userId &&
           <button onClick={handleUpdate} className="button"> Modifier description </button>
+          }
         </div>
       </div>
     </div>
