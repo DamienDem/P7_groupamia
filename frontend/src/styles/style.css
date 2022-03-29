@@ -248,11 +248,16 @@ nav ul .button {
   width: 100%;
   justify-content: center;
 }
-.profil--title svg {
-  cursor: pointer;
-  color: white;
+.profil--title span {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
   width: 3%;
-  margin-left: 35px;
+}
+.profil--title svg {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
 }
 .profil__container {
   display: flex;

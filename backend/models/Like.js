@@ -33,26 +33,18 @@ module.exports = (sequelize ,DataTypes) => {
       }, {
           classMethods: {
               associate: (models) => {
-                models.User.belongsToMany(models.Post, {
-                    through: models.Like,
-                    foreignKey: 'userId',
-                    otherKey: 'postId',
-                  });
-
-                models.Post.belongsToMany(models.User, {
-                  through: models.Like,
-                  foreignKey: 'postId',
-                  otherKey: 'userId',
-                });
-                models.Like.belongsTo(models.User, {
-                  foreignKey: 'userId',
-                  as: 'user',
-                });
-
-                models.Like.belongsTo(models.Post, {
-                  foreignKey: 'postId',
-                  as: 'post',
-                });   
+                models.Like.belongsTo(models.User, 
+                  { foreignKey: {
+                    allowNull: false
+                   
+                  }, onDelete:'CASCADE',
+                }),
+                  models.Like.belongsTo(models.Post, 
+                    { foreignKey: {
+                      allowNull: false,
+                         
+                    }, onDelete:'CASCADE',
+                  })  
               }
           }
       }

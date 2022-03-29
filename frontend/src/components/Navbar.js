@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import cookie from "js-cookie";
+import { WindowsFilled } from "@ant-design/icons";
 
 
 const Navbar = ({connectionChoice}) => {
@@ -41,6 +42,7 @@ const Navbar = ({connectionChoice}) => {
   };
   useEffect(() => {
     getUser();
+    fetchToken()
   }, [userId]);
 
   const logout = async () => {
@@ -51,6 +53,7 @@ const Navbar = ({connectionChoice}) => {
     })
     .then(_ => {
       removeCookie("jwt")
+      window.location = "/auth";
     })
     .catch((err) => console.log('logout error:'+err))
   }
@@ -69,7 +72,7 @@ const Navbar = ({connectionChoice}) => {
           <ul exact= 'true' id="navbar--home">
             <li>Bienvenue {userData.firstName}</li>
             <li>
-            <NavLink exact ='true' to="/profil">
+            <NavLink exact ='true' to="/profil" state={{ id: userId }}>
                 <img
                   className="profilPicture"
                   src={userData.picture}

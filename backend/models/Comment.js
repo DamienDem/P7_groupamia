@@ -37,26 +37,18 @@ module.exports = (sequelize, DataTypes) => {
       }, {
         classMethods: {
             associate: (models) => {
-              models.User.belongsToMany(models.Post, {
-                  through: models.Comment,
-                  foreignKey: 'userId',
-                  otherKey: 'postId',
-                });
-
-              models.Post.belongsToMany(models.User, {
-                through: models.Comment,
-                foreignKey: 'postId',
-                otherKey: 'userId',
-              });
-              models.Comment.belongsTo(models.User, {
-                foreignKey: 'userId',
-                as: 'user',
-              });
-
-              models.Comment.belongsTo(models.Post, {
-                foreignKey: 'postId',
-                as: 'post',
-              });   
+              models.Comment.belongsTo(models.User, 
+                { foreignKey: {
+                  allowNull: false
+                 
+                }, onDelete:'CASCADE',
+              }),
+                models.Comment.belongsTo(models.Post, 
+                  { foreignKey: {
+                    allowNull: false,
+                       
+                  }
+                })
             }
         }
     }

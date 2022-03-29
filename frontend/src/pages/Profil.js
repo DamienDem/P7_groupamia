@@ -3,9 +3,11 @@ import UpdateProfil from "../components/Profil/UpdateProfil";
 
 const Profil = () => {
   return (
-    <div className="profil">
-      <Navbar />
-      <UpdateProfil />
+    <div className="home">
+      <Navbar/>
+      <div className="profil">
+        <UpdateProfil/>
+      </div>
     </div>
   );
 };
