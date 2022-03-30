@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import DeleteCard from "./DeleteCard";
-import { EditOutlined, PictureOutlined } from "@ant-design/icons";
+import { EditOutlined, PictureOutlined , LoadingOutlined} from "@ant-design/icons";
 import CardComment from "./CardComment";
 
 const Card = ({ post, getAllPosts }) => {
@@ -109,7 +109,7 @@ const Card = ({ post, getAllPosts }) => {
   return (
     <li className="post__container" key={post.id}>
       {isLoading ? (
-        <span> chargement</span>
+        <LoadingOutlined />
       ) : (
         <>
           <div className="post__container__owner">

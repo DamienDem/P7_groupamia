@@ -4,25 +4,30 @@ import { DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const UpdateProfil = () => {
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState([]);
   const [image, setImage] = useState();
   const [description, setDescription] = useState("");
   const location = useLocation();
-
+  const [postPicture, setPostPicture] = useState("../images/photo-avatar-profil.png");
+  const [id, setId] = useState(location.state.id)
+  
   const getUser = async () => {
-    await fetchToken();
     await axios({
       method: "get",
-      url: "http://localhost:3000/user/"+location.state.id,
+      url: "http://localhost:3000/user/"+id,
       withCredentials: true,
     })
       .then((res) => {
         setUserData(res.data.data);
-        console.log(location);
+        setPostPicture(res.data.data.picture);
+        setId(res.data.data.userId)
       })
-      .catch((err) => console.log('error:'+err))
+      .catch((err) => {
+        console.log(err);
+        setUserData(null)})
   };
+  
   const fetchToken = async () => {
     await axios({
       method: "get",
@@ -37,7 +42,8 @@ const UpdateProfil = () => {
   };
 
   useEffect(() => {
-    getUser();
+    fetchToken()
+    getUser()
   }, [userId]);
 
   const updateUser = async (data) => {
@@ -47,9 +53,12 @@ const UpdateProfil = () => {
       data: data,
       withCredentials: true,
     })
-      .then(getUser(userId))
+      .then((res) => {
+        console.log(res);
+      })
       .catch((err) => console.log("updateUser" + err));
   };
+
  const deleteUser = async () => {
    await axios({
      method:"delete",
@@ -66,16 +75,25 @@ const UpdateProfil = () => {
     data.append("description", description)
     updateUser(data);
   };
-const handleImage = () => {
 
+const handleImage = (e) => {
+ e.preventDefault()
   const data = new FormData();
   data.append("image", image);
   updateUser(data);
 
 }
+const handlePicture = (e) => {
+  setPostPicture(URL.createObjectURL(e.target.files[0]));
+  setImage(e.target.files[0]);
+  console.log(e.target.files[0]);
+};
 
   return (
     <div className="profil">
+        {userData === null ?  (<h1> ANCIEN UTILISATEUR</h1>)
+        : (
+          <>
       <div className="profil--title">
       <h1>
         Profil de {userData.name} {userData.firstName}
@@ -85,7 +103,7 @@ const handleImage = () => {
       <div className="profil__container">
         <div className="profil__container__item profil__container--picture">
           <h2> Photo de profil </h2>
-          <img src={userData.picture} alt="profil"></img>
+          <img src={postPicture} alt="profil"></img>
           {userData.id === userId && 
           <form action="" onSubmit={handleImage} className="upload-picture">
             <label htmlFor="file" className="button"> Changer d'image</label>
@@ -94,7 +112,7 @@ const handleImage = () => {
               id="file"
               name="image"
               accept=".jpg, .jpeg, .png"
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e) => handlePicture(e)}
             />
             <input type="submit" className="button" value="envoyer" />
           </form>
@@ -114,6 +132,9 @@ const handleImage = () => {
           }
         </div>
       </div>
+          </>
+        )}
+      
     </div>
   );
 };

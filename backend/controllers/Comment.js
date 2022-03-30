@@ -33,7 +33,9 @@ exports.createComment = (req, res) => {
         if (!post) {
           const message = `La publication n'existe pas .`;
           return res.status(404).json({ message });
-        }
+        } 
+        post.update({comments: post.comments +1})
+        
         Comment.create({
           userId: userId,
           postId: post.id,

@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import cookie from "js-cookie";
-import { WindowsFilled } from "@ant-design/icons";
 
 
 const Navbar = ({connectionChoice}) => {
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState([]);
 
   const removeCookie = (key) => {
     if (window !== "undefined") {
       cookie.remove(key, { expires: 1 });
+      setUserId(null)
     }
   };
 
@@ -53,14 +53,14 @@ const Navbar = ({connectionChoice}) => {
     })
     .then(_ => {
       removeCookie("jwt")
-      window.location = "/auth";
     })
+    .then(  window.location = "/auth")
     .catch((err) => console.log('logout error:'+err))
   }
 
   return (
     <div className="nav-container">
-      {userId ? (
+      {userId !== null ? (
         <nav>
           <NavLink exact= 'true' to="/">
                 <img

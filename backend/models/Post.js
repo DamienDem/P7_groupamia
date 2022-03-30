@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         type:DataTypes.STRING,
         allowNull: true
       },
+      comments: {
+        type: DataTypes.INTEGER,
+        allowNull:true,
+      },
       likes: {
         type: DataTypes.INTEGER,
         allowNull: true
@@ -39,8 +43,11 @@ module.exports = (sequelize, DataTypes) => {
             models.Post.belongsTo(models.User, {
               foreignKey: {
                 allowNull: false
-              }, onDelete:'SET NULL',
-            })
+              }, onDelete:'CASCADE', 
+            }),
+              models.Post.hasMany(models.Comment )
+            models.Post.hasMany(models.Like)
+      
           }
         }
       }

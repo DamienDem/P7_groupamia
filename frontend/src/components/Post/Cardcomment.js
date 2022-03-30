@@ -15,7 +15,7 @@ const CardComment = ({ post, usersData, isAdmin, userId }) => {
   const [LikeAction, setLikeAction] = useState(null);
   const [DislikeAction, setDislikeAction] = useState(null);
   const [showComments, setShowComments] = useState(false);
-  const [numberOfComments,setNumberOfComments] = useState(0);
+  const [numberOfComments,setNumberOfComments] = useState(post.comments);
   const [comments, setComments] = useState([]);
  
 
@@ -231,10 +231,6 @@ const onDisLike = async () => {
     }).then((res) => {
       console.log(res.data);
       setComments(res.data.data);
-      res.data.data.map((comment) => {
-        if(comment.postId === post.id) return setNumberOfComments(numberOfComments+1)
-        else return null
-      })
     })
   .catch((err) => {
     console.log('impossible de chager les commentaires', err);
@@ -258,6 +254,7 @@ const onDisLike = async () => {
       })
         .then((res) => {
           console.log(res);
+          setNumberOfComments(numberOfComments +1)
           getAllComments();
         })
         .then((_) => setText(""))

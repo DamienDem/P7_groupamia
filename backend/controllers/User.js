@@ -1,5 +1,5 @@
 const express = require("express");
-const { User } = require("../db/sequelize");
+const { User, Like, Comment, Post } = require("../db/sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
@@ -168,7 +168,6 @@ exports.deleteUser = (req, res) => {
   const userId = decodedToken.id;
   const adminId = decodedToken.isAdmin;
 
-  console.log(decodedToken);
   if (userId == req.params.id || adminId == true) {
     User.findByPk(req.params.id).then((user) => {
       if (!user) {
