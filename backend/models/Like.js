@@ -37,13 +37,13 @@ module.exports = (sequelize ,DataTypes) => {
                   { foreignKey: {
                     allowNull: false
                    
-                  }, onDelete:'CASCADE',
+                  }, onDelete:'ON CASCADE',
                 }),
                   models.Like.belongsTo(models.Post, 
                     { foreignKey: {
                       allowNull: false,
                          
-                    }, onDelete:'CASCADE',
+                    },onDelete:'ON CASCADE',
                   })  
               }
           }

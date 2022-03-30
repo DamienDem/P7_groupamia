@@ -10,37 +10,40 @@ const SignUp = () => {
 
   const emailError = document.querySelector(".email.error");
   const passwordError = document.querySelector(".password.error");
-  const confirmPasswordError = document.querySelector(
-    ".confirmPassword.error"
+  const confirmPasswordError = document.querySelector(".confirmPassword.error");
+
+  const regexPassword = new RegExp(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
   );
-  
-  const regexPassword = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/);
   const testPassword = regexPassword.test(password);
 
-  const regexEmail = new RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/);
+  const regexEmail = new RegExp(
+    /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+  );
   const testEmail = regexEmail.test(email);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
- if(password !== confirmPassword || !testEmail ||  !testPassword) {
-  if (password !== confirmPassword) {
-    confirmPasswordError.innerHTML = "Les mots de passe ne correspondent pas";
-  } else {
-   confirmPasswordError.innerHTML = "";
-  }
-  if(!testEmail){
-    emailError.innerHTML ="email incorrect"
-  } else {
-   emailError.innerHTML =""
-  }
-  if(!testPassword){
-    passwordError.innerHTML = "Le mot de passe doit contenir au moin un caratére spéciale, une majuscule, une minuscule et faire 8 caractéres"
-  } else {
-   passwordError.innerHTML = ""
-  }
- }
-     else {
+    if (password !== confirmPassword || !testEmail || !testPassword) {
+      if (password !== confirmPassword) {
+        confirmPasswordError.innerHTML =
+          "Les mots de passe ne correspondent pas";
+      } else {
+        confirmPasswordError.innerHTML = "";
+      }
+      if (!testEmail) {
+        emailError.innerHTML = "email incorrect";
+      } else {
+        emailError.innerHTML = "";
+      }
+      if (!testPassword) {
+        passwordError.innerHTML =
+          "Le mot de passe doit contenir au moin un caratére spéciale, une majuscule, une minuscule et faire 8 caractéres";
+      } else {
+        passwordError.innerHTML = "";
+      }
+    } else {
       axios({
         method: "post",
         url: "http://localhost:3000/signup",
@@ -54,20 +57,24 @@ const SignUp = () => {
       })
         .then((res) => {
           console.log(res);
-            axios({
-              url:`http://localhost:3000/login`,
-              method: "POST",
-              data: { email, password },
-              credentials: true,
-            })
-            .then((res) => {
-                window.location = "/";
+          axios({
+            method: "POST",
+            url: `http://localhost:3000/login`,
+            data: { email, password },
+            withCredentials: true,
           })
+            .then((res) => {
+              console.log(res);
+              window.location = "/";
+            })
+            .catch((err) => {
+              console.log("connection impossible");
+            });
         })
         .catch((err) => {
           console.log(err);
-          emailError.innerHTML ="l'email est déja utilisé"
-        })   
+          emailError.innerHTML = "l'email est déja utilisé";
+        });
     }
   };
 
