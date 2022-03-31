@@ -1,4 +1,5 @@
 import axios from "axios";
+import cookie from "js-cookie";
 
 
 export const Login = async (data, emailError, passwordError) => {
@@ -39,3 +40,21 @@ export const Register = async (data, emailError, passwordError) => {
       emailError.innerHTML = "l'email est déja utilisé";
     });
 };
+
+export const Logout = async (setUserId) => {
+    await axios({
+      method:"get",
+      url:"http://localhost:3000/logout",
+      withCredentials: true,
+    })
+    .then(_ => {
+        ((key) => {
+            if (window !== "undefined") {
+              cookie.remove(key, { expires: 1 });
+              setUserId(null)
+            }
+          })();
+    })
+    .then(  window.location = "/auth")
+    .catch((err) => console.log('logout error:'+err))
+  }

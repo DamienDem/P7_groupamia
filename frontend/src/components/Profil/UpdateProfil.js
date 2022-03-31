@@ -1,7 +1,8 @@
 import React, { useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
 import { DeleteOutlined } from "@ant-design/icons";
-import axios from "axios";
+import { fetchToken, getUser, updateUser, deleteUser } from "../services/User";
+import { Logout } from "../services/autentification";
 
 const UpdateProfil = () => {
   const [userId, setUserId] = useState(null);
@@ -9,67 +10,25 @@ const UpdateProfil = () => {
   const [image, setImage] = useState();
   const [description, setDescription] = useState("");
   const location = useLocation();
-  const [postPicture, setPostPicture] = useState("../images/photo-avatar-profil.png");
+  const [postPicture, setPostPicture] = useState(location.state.picture);
   const [id, setId] = useState(location.state.id)
   
-  const getUser = async () => {
-    await axios({
-      method: "get",
-      url: "http://localhost:3000/user/"+id,
-      withCredentials: true,
-    })
-      .then((res) => {
-        setUserData(res.data.data);
-        setPostPicture(res.data.data.picture);
-        setId(res.data.data.userId)
-      })
-      .catch((err) => {
-        console.log(err);
-        setUserData(null)})
-  };
-  
-  const fetchToken = async () => {
-    await axios({
-      method: "get",
-      url: "http://localhost:3000",
-      withCredentials: true,
-    })
-      .then((res) => {
-        setUserId(res.data.id);
-        console.log(res.data);
-      })
-      .catch((err) => console.log("Pas de token:" + err));
-  };
-
   useEffect(() => {
-    fetchToken()
-    getUser()
-  }, [userId]);
+    fetchToken(setUserId)
+    getUser(setUserData, id,setId);
+  }, [userData.id])
 
-  const updateUser = async (data) => {
-    await axios({
-      method: "put",
-      url: "http://localhost:3000/user",
-      data: data,
-      withCredentials: true,
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log("updateUser" + err));
-  };
+  const handleDelete = () => {
+    if(userData.id === userId) {
+      deleteUser(userData.id); 
+      Logout(setUserId);
+    } else {
+      deleteUser(id);
+      window.location='/'
+    }
 
- const deleteUser = async () => {
-   await axios({
-     method:"delete",
-     url:"http://localhost:3000/user/"+location.state.id,
-     withCredentials: true
-   })
-   .then(() => console.log('utilisateur supprimé'))
-   .catch((err) => {
-     console.log('impossible de supprimer le compte:',err);
-   })
- }
+  }
+
   const handleUpdate = () => {
     const data = new FormData();
     data.append("description", description)
@@ -91,14 +50,11 @@ const handlePicture = (e) => {
 
   return (
     <div className="profil">
-        {userData === null ?  (<h1> ANCIEN UTILISATEUR</h1>)
-        : (
-          <>
       <div className="profil--title">
       <h1>
         Profil de {userData.name} {userData.firstName}
       </h1>
-      <DeleteOutlined onClick={deleteUser}/>
+      <DeleteOutlined onClick={handleDelete}/>
       </div>
       <div className="profil__container">
         <div className="profil__container__item profil__container--picture">
@@ -132,9 +88,6 @@ const handlePicture = (e) => {
           }
         </div>
       </div>
-          </>
-        )}
-      
     </div>
   );
 };

@@ -72,7 +72,7 @@ const Navbar = ({connectionChoice}) => {
           <ul exact= 'true' id="navbar--home">
             <li>Bienvenue {userData.firstName}</li>
             <li>
-            <NavLink exact ='true' to="/profil" state={{ id: userId }}>
+            <NavLink exact ='true' to="/profil" state={{ id: userId, picture: userData.picture }}>
                 <img
                   className="profilPicture"
                   src={userData.picture}
