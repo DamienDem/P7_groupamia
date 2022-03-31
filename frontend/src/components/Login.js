@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import {Login } from "./services/autentification"
 
-const Login = () => {
+const ConnectionForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -9,29 +9,9 @@ const Login = () => {
     e.preventDefault();
     const emailError = document.querySelector(".email.error");
     const passwordError = document.querySelector(".password.error");
+    const data = {email, password}
 
-    axios({
-      method: "post",
-      url: `http://localhost:3000/login`,
-      withCredentials: true,
-      data: {
-        email,
-        password,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-          window.location = "/";
-      })
-      .catch((err) => {
-        if(err.response.status == 401){
-          passwordError.innerHTML = err.response.data.message
-        } else if (err.response.status == 404) {
-          emailError.innerHTML = err.response.data.message
-        } else {
-          console.log(err.response.data.message);
-        }
-      });
+    Login(data, emailError, passwordError)
   };
 
   return (
@@ -58,4 +38,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ConnectionForm;

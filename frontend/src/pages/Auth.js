@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Login from '../components/Login';
+
 import SignUp from '../components/SignUp';
 import Navbar from "../components/Navbar";
+import ConnectionForm from "../components/Login";
 
 const Auth = () => {
     const [signUp, setSignUp] = useState(false);
@@ -23,7 +24,7 @@ const Auth = () => {
             <Navbar connectionChoice ={connectionChoice} />
             <div className="containerForm ">
                 {signUp && <SignUp/>}
-                {signIn && <Login/>}
+                {signIn && <ConnectionForm/>}
             </div>
         </div>
     )

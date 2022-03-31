@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { Register } from "./services/autentification";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +24,7 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
+    const data = { email, password, name, firstName };
     if (password !== confirmPassword || !testEmail || !testPassword) {
       if (password !== confirmPassword) {
         confirmPasswordError.innerHTML =
@@ -44,37 +44,7 @@ const SignUp = () => {
         passwordError.innerHTML = "";
       }
     } else {
-      axios({
-        method: "post",
-        url: "http://localhost:3000/signup",
-        data: {
-          email,
-          password,
-          name,
-          firstName,
-        },
-        credentials: true,
-      })
-        .then((res) => {
-          console.log(res);
-          axios({
-            method: "POST",
-            url: `http://localhost:3000/login`,
-            data: { email, password },
-            withCredentials: true,
-          })
-            .then((res) => {
-              console.log(res);
-              window.location = "/";
-            })
-            .catch((err) => {
-              console.log("connection impossible");
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-          emailError.innerHTML = "l'email est déja utilisé";
-        });
+      Register(data, emailError, passwordError);
     }
   };
 
@@ -104,6 +74,7 @@ const SignUp = () => {
       />
       <label htmlFor="password"> Mot de passe</label>
       <input
+        type="password"
         name="password"
         className="password"
         value={password}
@@ -112,6 +83,7 @@ const SignUp = () => {
       <div className="password error"></div>
       <label htmlFor="confirmPassword">Confirmation du mot de passe</label>
       <input
+        type="password"
         name="confirmPassword"
         className="confirmPassword"
         value={confirmPassword}
