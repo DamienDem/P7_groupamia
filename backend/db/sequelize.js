@@ -17,7 +17,7 @@ const sequelize = new Sequelize('groupamia', 'root', '', {
   .then(_=>console.log('La connexion à la BDD a bien été établie.'))
   .catch(error => console.error(`Impossible de se connecter à la BDD ${error}`));
 
- const initDb = sequelize.sync({force:true})
+ const initDb = sequelize.sync()
 .then(_=> console.log('la BDD a bien été synchronisée'));
 
 const User = UserModel(sequelize, DataTypes);

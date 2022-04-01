@@ -52,3 +52,17 @@ export const fetchToken = async (setUserId) => {
       console.log('impossible de supprimer le compte:',err);
     })
   }
+
+  const fetchUsersData = async (setUsersData) => {
+    await axios({
+      method: "get",
+      url: `${process.env.REACT_APP_API_URL}users`,
+      withCredentials: true,
+    })
+      .then((res) => {
+        setUsersData(res.data.data);
+      })
+      .catch((err) => {
+        console.log("fetchUsersData:" + err);
+      });
+  };

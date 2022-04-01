@@ -54,7 +54,13 @@ const handlePicture = (e) => {
       <h1>
         Profil de {userData.name} {userData.firstName}
       </h1>
-      <DeleteOutlined onClick={handleDelete}/>
+      <div onClick={() => {
+            if(window.confirm("Etes vous sure de vouloir supprimer cette publication ?")) {
+                handleDelete()
+            }
+        }}>
+            <DeleteOutlined />
+        </div>
       </div>
       <div className="profil__container">
         <div className="profil__container__item profil__container--picture">
