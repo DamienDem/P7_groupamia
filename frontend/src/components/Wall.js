@@ -27,6 +27,7 @@ const Wall = () => {
             console.log("impossible de récupérer les publications err:" + err)
           );
       };
+      
     useEffect(() => {
         getAllPosts();
         fetchToken(setUserId,setIsAdmin);

@@ -11,10 +11,10 @@ function App() {
      
         <div>
           <Routes>
-            <Route exact= 'true' path="/auth" element={<Auth />} />
-            <Route exact= 'true' path="/" element={<Home />} />
+            <Route exact= 'true' path="/" element={<Auth />} />
+            <Route exact= 'true' path="/home" element={<Home />} />
             <Route exact= 'true' path="/profil" element={<Profil />} />
-            <Route element={<PageNotFound />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
     </Router>

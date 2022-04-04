@@ -7,10 +7,12 @@ const likeRoutes = require("./routes/Like");
 const commentRoutes = require("./routes/Comment");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+require('dotenv').config()
+
 
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:8080",
+  origin: `${process.env.CLIENT_URL}`,
   credentials: true,
   allowedHeaders: ["sessionId", "Content-Type"],
   exposedHeaders: ["sessionId"],

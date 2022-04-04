@@ -11,7 +11,7 @@ export const Login = async (data, emailError, passwordError) => {
   })
     .then((res) => {
       console.log(res);
-      window.location = "/";
+      window.location = "/home";
     })
     .catch((err) => {
       if (err.response.status === 401) {
@@ -55,6 +55,6 @@ export const Logout = async (setUserId) => {
             }
           })();
     })
-    .then(  window.location = "/auth")
+    .then(  window.location = "/")
     .catch((err) => console.log('logout error:'+err))
   }

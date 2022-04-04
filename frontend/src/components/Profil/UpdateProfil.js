@@ -18,6 +18,7 @@ const UpdateProfil = () => {
     fetchToken(setUserId, setIsAdmin)
     getUser(setUserData,setPostPicture, location.state.id);
   }, [userId])
+  
 
   const handleDelete = () => {
     if(userData.id === userId) {
@@ -25,7 +26,7 @@ const UpdateProfil = () => {
       Logout(setUserId);
     } else {
       deleteUser(userData.id);
-      window.location='/'
+      window.location='/home'
     }
   }
 

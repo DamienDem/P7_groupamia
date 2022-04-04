@@ -10,7 +10,9 @@ export const fetchToken = async (setUserId, setIsAdmin) => {
         setUserId(res.data.id);
         setIsAdmin(res.data.isAdmin)
       })
-      .catch((err) => console.log("Pas de token:" + err));
+      .catch((err) => {
+        console.log("Pas de token:" + err)
+      });
   };
 
 

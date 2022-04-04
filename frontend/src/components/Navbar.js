@@ -22,7 +22,7 @@ const Navbar = ({ connectionChoice }) => {
     <div className="nav-container">
       {userId !== null ? (
         <nav>
-          <NavLink exact="true" to="/">
+          <NavLink exact="true" to="/home">
             <img
               className="logo logo--desktop"
               src="./images/icon-left-font.png"
@@ -48,7 +48,7 @@ const Navbar = ({ connectionChoice }) => {
                   alt="profil"
                 />
               </NavLink>
-              <NavLink exact="true" to="/auth">
+              <NavLink exact="true" to="/">
                 <div onClick={(e) => handleLogout(e)} className="button">
                   {" "}
                   Se déconnecter{" "}
