@@ -1,11 +1,10 @@
 .post-container {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    width: 90%;
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: 1px solid black;
+    border: 1px solid $color3;
+    border-radius: $boderRadius;
+    padding: 15px 30px;
+    margin: 30px 10px;
+    background: $color4;
+    @include shadow;
     &--user{
         display: flex;
         align-items: center;

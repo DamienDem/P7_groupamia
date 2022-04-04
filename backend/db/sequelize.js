@@ -4,7 +4,7 @@ const PostModel = require('../models/Post');
 const LikeModel = require ('../models/Like');
 const CommentModel = require('../models/Comment');
 
-const sequelize = new Sequelize('groupamia', 'root', '', {
+const sequelize = new Sequelize('groupomania', 'root', '', {
     host: 'localhost',
     dialect: 'mariadb',
     dialectOptions: {
@@ -17,7 +17,7 @@ const sequelize = new Sequelize('groupamia', 'root', '', {
   .then(_=>console.log('La connexion à la BDD a bien été établie.'))
   .catch(error => console.error(`Impossible de se connecter à la BDD ${error}`));
 
- const initDb = sequelize.sync()
+ const initDb = sequelize.sync({force:true})
 .then(_=> console.log('la BDD a bien été synchronisée'));
 
 const User = UserModel(sequelize, DataTypes);

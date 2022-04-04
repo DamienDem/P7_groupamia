@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const fetchToken = async (setUserId) => {
+export const fetchToken = async (setUserId, setIsAdmin) => {
     await axios({
       method: "get",
       url: `${process.env.REACT_APP_API_URL}`,
@@ -8,12 +8,13 @@ export const fetchToken = async (setUserId) => {
     })
       .then((res) => {
         setUserId(res.data.id);
+        setIsAdmin(res.data.isAdmin)
       })
       .catch((err) => console.log("Pas de token:" + err));
   };
 
 
-  export const getUser = async (setUserData, id,setId) => {
+  export const getUser = async (setUserData, id) => {
     await axios({
       method: "get",
       url: `${process.env.REACT_APP_API_URL}user/`+id,
@@ -21,11 +22,10 @@ export const fetchToken = async (setUserId) => {
     })
       .then((res) => {
         setUserData(res.data.data);
-        setId(res.data.data.userId)
       })
       .catch((err) => {
-        console.log(err);
-        setUserData(null)})
+        console.log("impossible de récupérer les données utilisateur", err);
+      });
   };
 
   export const updateUser = async (data) => {
@@ -53,7 +53,7 @@ export const fetchToken = async (setUserId) => {
     })
   }
 
-  const fetchUsersData = async (setUsersData) => {
+  export const fetchUsersData = async (setUsersData) => {
     await axios({
       method: "get",
       url: `${process.env.REACT_APP_API_URL}users`,

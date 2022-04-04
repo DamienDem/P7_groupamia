@@ -3,12 +3,16 @@
     justify-content: center;
     background: $color3;
     &__container {
-      max-width: 90%;
       border: 1px solid $color3;
       border-radius: $boderRadius;
       padding: 15px 30px;
       margin: 30px 10px;
       background: $color4;
+      @include shadow;
+      &__owner {
+          display: flex;
+          flex-wrap: wrap; 
+      }
       &--button {
         display: flex;
         justify-content: space-between;
@@ -20,7 +24,7 @@
           display: flex;
           align-items: center;
           justify-content: space-around;
-          margin: 15px;
+          margin: 5px;
           padding: 5px;
           border: 1px solid $color3;
           max-height: 50px;
@@ -34,9 +38,7 @@
         object-fit: contain;
       }
       &--content {
-        display: flex;
-        justify-content: space-between;
-        margin: 10px 0;
+        margin: 10px;
       }
       &__owner {
         display: flex;
@@ -87,15 +89,6 @@
             }
             & .form--submit {
               margin: 15px;
-              & input {
-                height: 40px;
-                width: 100px;
-                margin: 0 15px;
-                padding: 5px 10px;
-                border-radius: $boderRadius;
-                background:  $color1;
-                color: $color4;
-              }
             }
         }
       }

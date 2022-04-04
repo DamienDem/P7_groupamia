@@ -13,6 +13,7 @@ module.exports = (sequelize ,DataTypes) => {
           model: 'Posts',
           key: 'id'
         }
+        , onDelete:'CASCADE'
       },
       userId: {
         allowNull: false,
@@ -21,6 +22,7 @@ module.exports = (sequelize ,DataTypes) => {
           model: 'Users',
           key: 'id'
         }
+        , onDelete:'CASCADE'
       },
       isLike : {
         allowNull: false,

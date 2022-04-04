@@ -1,24 +1,6 @@
 import axios from "axios";
 
-export const getAllPosts = async (setAllPosts) => {
-  await axios({
-    method: "get",
-    url: `${process.env.REACT_APP_API_URL}posts`,
-    withCredentials: true,
-  })
-    .then((res) => {
-      setAllPosts(
-        res.data.data.sort((b, a) => {
-          return a.id - b.id;
-        })
-      );
-    })
-    .catch((err) =>
-      console.log("impossible de récupérer les publications err:" + err)
-    );
-};
-
-export const addPost = async (data,userId) => {
+export const addPost = async (data,userId, getAllPosts) => {
   await axios({
     method: "post",
     url: `${process.env.REACT_APP_API_URL}post/` + userId,
@@ -33,7 +15,7 @@ export const addPost = async (data,userId) => {
     });
 };
 
-export const updatePost = async (data, id) => {
+export const updatePost = async (data, id, getAllPosts) => {
   await axios({
     method: "put",
     url: `${process.env.REACT_APP_API_URL}post/` + id,

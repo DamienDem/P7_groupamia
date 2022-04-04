@@ -1,87 +1,35 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { fetchUsersData } from "../services/User";
+import { updatePost } from "../services/Post";
 import DeleteCard from "./DeleteCard";
-import { EditOutlined, PictureOutlined , LoadingOutlined} from "@ant-design/icons";
+import { dateParser } from "../services/dateParser";
+import {
+  EditOutlined,
+  PictureOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import CardComment from "./CardComment";
 
-const Card = ({ post, getAllPosts }) => {
+const Card = ({ post, getAllPosts, isAdmin, userId }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [usersData, setUsersData] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false);
   const [textUpdate, setTextUpdate] = useState(post.content);
   const [imageUpdate, setImageUpdate] = useState(null);
   const [postPicture, setPostPicture] = useState(post.attachement);
 
-  const dateParser = (num) => {
-    let options = {
-      hour: "2-digit",
-      minute: "2-digit",
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-
-    let timestamp = Date.parse(num);
-
-    let date = new Date(timestamp).toLocaleDateString("fr-FR", options);
-
-    return date.toString();
-  };
-
-  const fetchToken = async () => {
-    await axios({
-      method: "get",
-      url: "http://localhost:3000",
-      withCredentials: true,
-    })
-      .then((res) => {
-        setUserId(res.data.id);
-        setIsAdmin(res.data.isAdmin);
-        console.log(res.data.id);
-      })
-      .catch((err) => console.log("Pas de token:" + err));
-  };
-  const fetchUsersData = async () => {
-    await axios({
-      method: "get",
-      url: "http://localhost:3000/users",
-      withCredentials: true,
-    })
-      .then((res) => {
-        setUsersData(res.data.data);
-      })
-      .catch((err) => {
-        console.log("fetchUsersData:" + err);
-      });
-  };
-
-  const updatePost = async (data) => {
-    await axios({
-      method: "put",
-      url: "http://localhost:3000/post/" + post.id,
-      data: data,
-      withCredentials: true,
-    })
-      .then((res) => {
-        console.log(res);
-        getAllPosts();
-      })
-      .catch((err) => {
-        console.log("erreur modification", err);
-      });
-
-    setIsUpdated(false);
-  };
+  useEffect(() => {
+    if (usersData !== null) {
+      setIsLoading(false);
+    } else {
+      fetchUsersData(setUsersData);
+    }
+  }, [usersData]);
 
   const handlePicture = (e) => {
     setPostPicture(URL.createObjectURL(e.target.files[0]));
     setImageUpdate(e.target.files[0]);
-    console.log(e.target.files[0]);
   };
 
   const handlePost = async () => {
@@ -89,22 +37,12 @@ const Card = ({ post, getAllPosts }) => {
       const data = new FormData();
       data.append("content", textUpdate);
       data.append("image", imageUpdate);
-      console.log(imageUpdate);
-      await updatePost(data);
+      await updatePost(data,post.id,getAllPosts);
+      setIsUpdated(false);
     } else {
       alert("Veuillez entrer un message");
     }
   };
-
-  useEffect(() => {
-    fetchToken();
-
-    if (usersData !== null) {
-      setIsLoading(false);
-    } else {
-      fetchUsersData();
-    }
-  }, [usersData]);
 
   return (
     <li className="post__container" key={post.id}>
@@ -127,7 +65,7 @@ const Card = ({ post, getAllPosts }) => {
                   }
                   alt="profil"
                 />
-                <span>
+                <h3>
                   {" "}
                   {usersData !== null &&
                     usersData
@@ -135,15 +73,15 @@ const Card = ({ post, getAllPosts }) => {
                         if (user.id === post.userId) return user.firstName;
                         else return null;
                       })
-                      .join(" ")}
+                      .join("")}{" "}
                   {usersData !== null &&
                     usersData
                       .map((user) => {
                         if (user.id === post.userId) return user.name;
                         else return null;
                       })
-                      .join("")}{" "}
-                </span>
+                      .join("")}
+                </h3>
               </div>
             </Link>
             <span>{dateParser(post.created)} </span>
@@ -152,8 +90,7 @@ const Card = ({ post, getAllPosts }) => {
             {userId === post.userId && (
               <EditOutlined onClick={() => setIsUpdated(!isUpdated)} />
             )}
-            {(userId === post.userId ||
-              (isAdmin && userId) !== post.userId) && (
+            {((userId === post.userId )|| isAdmin) && (
               <DeleteCard post={post} getAllPosts={getAllPosts} />
             )}
           </div>

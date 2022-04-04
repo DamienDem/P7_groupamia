@@ -1,9 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import Navbar from "../components/Navbar"
 import Wall from "../components/Wall";
-import axios from "axios";
-
-
 
 const Home = () => {
 

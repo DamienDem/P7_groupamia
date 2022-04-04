@@ -7,23 +7,25 @@ import { Logout } from "../services/autentification";
 const UpdateProfil = () => {
   const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [ isAdmin, setIsAdmin] = useState(false)
   const [image, setImage] = useState();
   const [description, setDescription] = useState("");
   const location = useLocation();
-  const [postPicture, setPostPicture] = useState(location.state.picture);
-  const [id, setId] = useState(location.state.id)
+  const [postPicture, setPostPicture] = useState(userData.picture);
+  
   
   useEffect(() => {
-    fetchToken(setUserId)
-    getUser(setUserData, id,setId);
-  }, [userData.id])
+    fetchToken(setUserId, setIsAdmin)
+    console.log('state location',location.state.id);
+    getUser(setUserData, location.state.id);
+  }, [userId, userData.picture])
 
   const handleDelete = () => {
     if(userData.id === userId) {
       deleteUser(userData.id); 
       Logout(setUserId);
     } else {
-      deleteUser(id);
+      deleteUser(userData.id);
       window.location='/'
     }
 
@@ -40,12 +42,10 @@ const handleImage = (e) => {
   const data = new FormData();
   data.append("image", image);
   updateUser(data);
-
 }
 const handlePicture = (e) => {
   setPostPicture(URL.createObjectURL(e.target.files[0]));
   setImage(e.target.files[0]);
-  console.log(e.target.files[0]);
 };
 
   return (
@@ -54,13 +54,15 @@ const handlePicture = (e) => {
       <h1>
         Profil de {userData.name} {userData.firstName}
       </h1>
+      {(userId === userData.id || isAdmin) &&
       <div onClick={() => {
-            if(window.confirm("Etes vous sure de vouloir supprimer cette publication ?")) {
+            if(window.confirm("Etes vous sure de vouloir supprimer cette utilisateur ?")) {
                 handleDelete()
             }
         }}>
             <DeleteOutlined />
         </div>
+       }
       </div>
       <div className="profil__container">
         <div className="profil__container__item profil__container--picture">
@@ -76,7 +78,7 @@ const handlePicture = (e) => {
               accept=".jpg, .jpeg, .png"
               onChange={(e) => handlePicture(e)}
             />
-            <input type="submit" className="button" value="envoyer" />
+            <input  type="submit" className="button" value="Envoyer" />
           </form>
           }
         </div>

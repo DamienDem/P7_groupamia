@@ -6,6 +6,7 @@
   box-sizing: border-box;
   text-decoration: none;
   list-style-type: none;
+  color: black;
 }
 
 img {
@@ -16,11 +17,19 @@ img {
   font: 900;
 }
 
+.main {
+  background: #F0F2F5;
+  padding: 15px 0;
+  height: 100vh;
+}
+
 textarea {
   resize: none;
   width: 100%;
   min-height: 80px;
   padding: 5px 10px;
+  background: #F0F2F5;
+  border-radius: 15px;
 }
 
 input[type=file] {
@@ -35,15 +44,25 @@ input[type=file]::-webkit-file-upload-button {
   cursor: pointer;
 }
 
-button {
+.button {
   display: flex;
   align-items: center;
+  justify-content: center;
   background: #d05059;
   color: #ffffff;
   min-height: 40px;
   border-radius: 15px;
+  border: none;
+  box-sizing: border-box;
   padding: 0 10px;
   cursor: pointer;
+  box-shadow: 1px 1px 5px #000000;
+}
+.button:hover {
+  background: #ffffff;
+  color: #d05059;
+  border: 1px solid #d05059;
+  transition: 0.6s;
 }
 
 .error {
@@ -66,47 +85,67 @@ nav {
   justify-content: space-between;
   width: 100%;
   background: #ffffff;
-  margin: 5px 0;
+  margin: 10px 0;
 }
 nav img {
   max-height: 50px;
   margin-right: 10px;
 }
 nav .logo {
+  margin-left: 10px;
+}
+nav .logo--desktop {
   min-width: 200px;
+}
+@media (max-width: 570px) {
+  nav .logo--desktop {
+    display: none;
+  }
+}
+nav .logo--mobile {
+  display: none;
+}
+@media (max-width: 570px) {
+  nav .logo--mobile {
+    display: inline;
+    width: 50px;
+  }
 }
 nav #navbar--home {
   width: 100%;
 }
-nav #navbar--auth {
-  width: 40%;
+@media (max-width: 570px) {
+  nav #navbar--auth {
+    width: 100%;
+  }
 }
 nav ul {
   display: flex;
   justify-content: space-around;
 }
+@media (max-width: 570px) {
+  nav ul {
+    justify-content: flex-end;
+  }
+}
 nav ul li {
   display: flex;
   align-items: center;
+  margin-right: 10px;
 }
-nav ul .button {
-  display: flex;
-  align-items: center;
-  background: #d05059;
-  color: #ffffff;
-  min-height: 40px;
-  border-radius: 15px;
-  padding: 0 10px;
-  cursor: pointer;
+@media (max-width: 570px) {
+  nav ul .welcome {
+    display: none;
+  }
 }
 
 .containerForm {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f3f3f3;
-  height: 100vh;
+  background: #F0F2F5;
   padding: 30px;
+  height: 100vh;
 }
 .containerForm form {
   display: flex;
@@ -118,11 +157,16 @@ nav ul .button {
   padding: 30px 0;
   width: 70%;
 }
+@media (max-width: 768px) {
+  .containerForm form {
+    width: 100%;
+  }
+}
 .containerForm input {
   border-radius: 15px;
   height: 50px;
   width: 64%;
-  border-color: #f3f3f3;
+  border-color: #F0F2F5;
   margin: 15px 0;
 }
 .containerForm input[type=submit] {
@@ -130,19 +174,29 @@ nav ul .button {
   color: #ffffff;
   cursor: pointer;
 }
+.containerForm input[type=submit]:hover {
+  background: #ffffff;
+  color: #d05059;
+  border: 1px solid #d05059;
+  transition: 0.6s;
+}
 
 .post {
   display: flex;
   justify-content: center;
-  background: #f3f3f3;
+  background: #F0F2F5;
 }
 .post__container {
-  max-width: 90%;
-  border: 1px solid #f3f3f3;
+  border: 1px solid #F0F2F5;
   border-radius: 15px;
   padding: 15px 30px;
   margin: 30px 10px;
   background: #ffffff;
+  box-shadow: 0 0 15px #00000050;
+}
+.post__container__owner {
+  display: flex;
+  flex-wrap: wrap;
 }
 .post__container--button {
   display: flex;
@@ -156,9 +210,9 @@ nav ul .button {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin: 15px;
+  margin: 5px;
   padding: 5px;
-  border: 1px solid #f3f3f3;
+  border: 1px solid #F0F2F5;
   max-height: 50px;
 }
 .post__container__advice--item svg {
@@ -170,9 +224,7 @@ nav ul .button {
   object-fit: contain;
 }
 .post__container--content {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
+  margin: 10px;
 }
 .post__container__owner {
   display: flex;
@@ -225,22 +277,14 @@ nav ul .button {
 .post__comment form .form--submit {
   margin: 15px;
 }
-.post__comment form .form--submit input {
-  height: 40px;
-  width: 100px;
-  margin: 0 15px;
-  padding: 5px 10px;
-  border-radius: 15px;
-  background: #d05059;
-  color: #ffffff;
-}
 
 .profil {
   display: flex;
   align-items: center;
   flex-direction: column;
-  background: #f3f3f3;
-  height: 100%;
+  width: 100%;
+  background: #F0F2F5;
+  height: 150vh;
   position: relative;
 }
 .profil--title {
@@ -263,7 +307,13 @@ nav ul .button {
   display: flex;
   justify-content: space-around;
   width: 90%;
+  max-width: 1600px;
   margin: 20px 0;
+}
+@media (max-width: 570px) {
+  .profil__container {
+    flex-direction: column;
+  }
 }
 .profil__container h1 {
   margin-top: 30px;
@@ -279,6 +329,11 @@ nav ul .button {
   padding: 15px;
   margin: 20px 0;
 }
+@media (max-width: 570px) {
+  .profil__container__item {
+    width: 100%;
+  }
+}
 .profil__container__item form {
   display: flex;
   flex-direction: column;
@@ -292,15 +347,6 @@ nav ul .button {
   justify-content: center;
 }
 .profil__container__item .button {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #d05059;
-  color: #ffffff;
-  border-radius: 15px;
-  height: 45px;
-  width: 100%;
   margin-top: 15px;
 }
 .profil__container__item img {
@@ -329,13 +375,12 @@ nav ul .button {
 }
 
 .post-container {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  width: 90%;
-  margin: 0 10px;
-  padding: 10px 20px;
-  border: 1px solid black;
+  border: 1px solid #F0F2F5;
+  border-radius: 15px;
+  padding: 15px 30px;
+  margin: 30px 10px;
+  background: #ffffff;
+  box-shadow: 0 0 15px #00000050;
 }
 .post-container--user {
   display: flex;
@@ -387,6 +432,7 @@ nav ul .button {
 .comment-container__item--header {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .comment-container__item--userData {
   display: flex;
@@ -402,9 +448,8 @@ nav ul .button {
 }
 .comment-container__item--content {
   margin: 10px;
-  border: 2px solid black;
   border-radius: 15px;
-  background: #d05059;
+  background: #F0F2F5;
   color: #ffffff;
   padding: 10px;
   min-height: 100px;
@@ -414,6 +459,7 @@ nav ul .button {
   flex-direction: column;
   align-items: flex-end;
   margin: 15px 0;
+  width: 100%;
 }
 .comment-container__item--updateForm .editAndDelete-icon {
   display: flex;
@@ -434,16 +480,11 @@ nav ul .button {
   padding: 10px;
   width: 100%;
 }
-.comment-container__item--updateForm form input[type=submit] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #d05059;
-  color: #ffffff;
-  min-height: 40px;
-  border-radius: 15px;
-  padding: 0 10px;
-  cursor: pointer;
+.comment-container__item--text {
+  width: 100%;
+}
+.comment-container__item--text input[type=text] {
+  background: #F0F2F5;
 }
 .comment-container__item--commentForm {
   display: flex;
@@ -457,17 +498,7 @@ nav ul .button {
   margin-bottom: 15px;
   padding: 10px;
   width: 100%;
-}
-.comment-container__item--commentForm input[type=submit] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #d05059;
-  color: #ffffff;
-  min-height: 40px;
-  border-radius: 15px;
-  padding: 0 10px;
-  cursor: pointer;
+  background: #F0F2F5;
 }
 
 /*# sourceMappingURL=style.css.map */

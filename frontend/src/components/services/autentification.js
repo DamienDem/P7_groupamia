@@ -44,7 +44,7 @@ export const Register = async (data, emailError, passwordError) => {
 export const Logout = async (setUserId) => {
     await axios({
       method:"get",
-      url:"http://localhost:3000/logout",
+      url:`${process.env.REACT_APP_API_URL}logout`,
       withCredentials: true,
     })
     .then(_ => {
