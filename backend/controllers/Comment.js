@@ -11,14 +11,6 @@ exports.createComment = (req, res) => {
   const decodedToken = jwt.verify(token, `Mon_token_secret`);
   const userId = decodedToken.id;
 
-  let imageURL = req.file
-    ? {
-        attachement: `${req.protocol}://${req.get("host")}/images/${
-          req.file.filename
-        }`,
-      }
-    : { attachement: null };
-
   User.findOne({
     where: { id: userId },
   })
@@ -39,7 +31,6 @@ exports.createComment = (req, res) => {
         Comment.create({
           userId: userId,
           postId: post.id,
-          imageURL,
           content: content,
         })
           .then((comment) => {

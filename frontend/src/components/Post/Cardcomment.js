@@ -36,7 +36,7 @@ const CardComment = ({ post, usersData, isAdmin, userId }) => {
       post
     );
     getAllComments(setComments);
-  }, [numberOfComments, post.comments]);
+  }, [numberOfComments, edit]);
 
   const onLike = async () => {
     if (LikeAction !== null) {
@@ -118,7 +118,7 @@ const CardComment = ({ post, usersData, isAdmin, userId }) => {
               setShowComments(!showComments);
             }}
           />
-          <span>{post.comments}</span>
+          <span>{numberOfComments}</span>
         </li>
       </ul>
       <div className="comment-container">

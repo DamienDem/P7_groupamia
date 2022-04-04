@@ -11,14 +11,13 @@ const UpdateProfil = () => {
   const [image, setImage] = useState();
   const [description, setDescription] = useState("");
   const location = useLocation();
-  const [postPicture, setPostPicture] = useState(userData.picture);
+  const [postPicture, setPostPicture] = useState();
   
   
   useEffect(() => {
     fetchToken(setUserId, setIsAdmin)
-    console.log('state location',location.state.id);
-    getUser(setUserData, location.state.id);
-  }, [userId, userData.picture])
+    getUser(setUserData,setPostPicture, location.state.id);
+  }, [userId])
 
   const handleDelete = () => {
     if(userData.id === userId) {
@@ -28,7 +27,6 @@ const UpdateProfil = () => {
       deleteUser(userData.id);
       window.location='/'
     }
-
   }
 
   const handleUpdate = () => {

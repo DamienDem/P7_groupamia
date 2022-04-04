@@ -6,12 +6,13 @@ import { Logout } from "./services/autentification";
 const Navbar = ({ connectionChoice }) => {
   const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [postPicture, setPostPicture] = useState();
 
   useEffect(() => {
     fetchToken(setUserId);
-    getUser(setUserData, userId);
+    getUser(setUserData,setPostPicture, userId);
   
-  }, [userId]);
+  }, [userId, userData.picture]);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -43,7 +44,7 @@ const Navbar = ({ connectionChoice }) => {
               >
                 <img
                   className="profilPicture"
-                  src={userData.picture}
+                  src={postPicture}
                   alt="profil"
                 />
               </NavLink>

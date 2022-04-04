@@ -14,7 +14,7 @@ export const fetchToken = async (setUserId, setIsAdmin) => {
   };
 
 
-  export const getUser = async (setUserData, id) => {
+  export const getUser = async (setUserData,setUserPicture, id) => {
     await axios({
       method: "get",
       url: `${process.env.REACT_APP_API_URL}user/`+id,
@@ -22,6 +22,7 @@ export const fetchToken = async (setUserId, setIsAdmin) => {
     })
       .then((res) => {
         setUserData(res.data.data);
+        setUserPicture(res.data.data.picture)
       })
       .catch((err) => {
         console.log("impossible de récupérer les données utilisateur", err);
