@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             type: DataTypes.STRING
           },
-          attachement: {
-            allowNull: true,
-            type: DataTypes.STRING
-          }
     }, {
         timestamps: true,
         createdAt: 'created',

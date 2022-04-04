@@ -19,6 +19,7 @@ exports.createPost = (req, res) => {
             attachement: `${req.protocol}://${req.get("host")}/images/${
               req.file.filename
             }`,
+            comments:0
           }
         : { ...req.body, userId: req.params.id };
       console.log(req.params.id, imageURL);

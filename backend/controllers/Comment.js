@@ -63,15 +63,6 @@ exports.updateComment = (req, res) => {
   const decodedToken = jwt.verify(token, `Mon_token_secret`);
   const userId = decodedToken.id;
 
-  const commentObject = req.file
-    ? {
-        ...req.body,
-        attachement: `${req.protocol}://${req.get("host")}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
-
   User.findByPk(userId)
     .then((user) => {
       if (!user) {
@@ -84,22 +75,12 @@ exports.updateComment = (req, res) => {
               const message = `La publication demandé n'existe pas .`;
               return res.status(404).json({ message });
             }
-            if (comment.attachement !== null) {
-              const filename = comment.attachement.split("/images/")[1];
-              fs.unlink(`images/${filename}`, () => {
-                Comment.update(commentObject, {
-                  where: { id: req.params.id },
-                });
-                const message = `La publication a bien été modifié.`;
-                res.json({ message, data: commentObject });
-              });
-            } else {
-              Comment.update(commentObject, {
+             else 
+              Comment.update(req.body, {
                 where: { id: req.params.id },
               });
               const message = `La publication a bien été modifié.`;
-              res.json({ message, data: commentObject });
-            }
+              res.json({ message, data: req.body });
           })
           .catch((error) => {
             const message = `La publication n'a pas pu être modifié. Réessayez dans quelques instants.`;
