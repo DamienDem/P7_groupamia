@@ -52,6 +52,7 @@ const SignUp = () => {
     <form action="" onSubmit={handleSignUp} id="sign-up-form">
       <label htmlFor="email">Email</label>
       <input
+        id="email"
         type="text"
         name="email"
         value={email}
@@ -60,6 +61,7 @@ const SignUp = () => {
       <div className="email error"></div>
       <label htmlFor="name"> Nom </label>
       <input
+        id="name"
         type="text"
         name="name"
         value={name}
@@ -67,6 +69,7 @@ const SignUp = () => {
       />
       <label htmlFor="firstName"> Prénom </label>
       <input
+        id="firstName"
         type="text"
         name="firstName"
         value={firstName}
@@ -74,6 +77,7 @@ const SignUp = () => {
       />
       <label htmlFor="password"> Mot de passe</label>
       <input
+        id="password"
         type="password"
         name="password"
         className="password"
@@ -83,6 +87,7 @@ const SignUp = () => {
       <div className="password error"></div>
       <label htmlFor="confirmPassword">Confirmation du mot de passe</label>
       <input
+        id="confirmPassword"
         type="password"
         name="confirmPassword"
         className="confirmPassword"

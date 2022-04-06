@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Login } from "./services/autentification"
+import { Login } from "./services/autentification";
 
 const ConnectionForm = () => {
   const [email, setEmail] = useState("");
@@ -9,15 +9,16 @@ const ConnectionForm = () => {
     e.preventDefault();
     const emailError = document.querySelector(".email.error");
     const passwordError = document.querySelector(".password.error");
-    const data = {email, password}
+    const data = { email, password };
 
-    Login(data, emailError, passwordError)
+    Login(data, emailError, passwordError);
   };
 
   return (
     <form action="" onSubmit={handleLogin} id="sign-up-form">
       <label htmlFor="email">Email</label>
       <input
+        id="email"
         type="text"
         name="email"
         value={email}
@@ -26,6 +27,7 @@ const ConnectionForm = () => {
       <div className="email error"></div>
       <label htmlFor="password"> Mot de passe</label>
       <input
+        id="password"
         name="password"
         type="password"
         className="password"

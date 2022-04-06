@@ -3,8 +3,7 @@
 }
 
 @mixin button-hover {
-    background: $color4;
-    color: $color1;
-    border: 1px solid $color1;
+    background: $color2;
+    color: $color4;
     transition: 0.6s;
 }

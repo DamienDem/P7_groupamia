@@ -99,6 +99,7 @@ const Card = ({ post, getAllPosts, isAdmin, userId }) => {
           </div>
           {isUpdated && (
             <div className="post__container--update">
+              <label id="message"> message</label>
               <textarea
                 name="content"
                 id="message"
@@ -109,6 +110,7 @@ const Card = ({ post, getAllPosts, isAdmin, userId }) => {
                 <div>
                   <>
                     <PictureOutlined />
+                    <label id="file-upload"> image</label>
                     <input
                       type="file"
                       id="file-upload"
@@ -126,7 +128,6 @@ const Card = ({ post, getAllPosts, isAdmin, userId }) => {
             </div>
           )}
           <div className="post__container--image">
-            <h2> {post.title} </h2>
             <img src={postPicture} alt="" />
           </div>
           <div>

@@ -48,7 +48,7 @@ input[type=file]::-webkit-file-upload-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #d05059;
+  background: #992930;
   color: #ffffff;
   min-height: 40px;
   border-radius: 15px;
@@ -59,9 +59,8 @@ input[type=file]::-webkit-file-upload-button {
   box-shadow: 1px 1px 5px #000000;
 }
 .button:hover {
-  background: #ffffff;
-  color: #d05059;
-  border: 1px solid #d05059;
+  background: #122441;
+  color: #ffffff;
   transition: 0.6s;
 }
 
@@ -170,14 +169,13 @@ nav ul li {
   margin: 15px 0;
 }
 .containerForm input[type=submit] {
-  background: #d05059;
+  background: #992930;
   color: #ffffff;
   cursor: pointer;
 }
 .containerForm input[type=submit]:hover {
-  background: #ffffff;
-  color: #d05059;
-  border: 1px solid #d05059;
+  background: #122441;
+  color: #ffffff;
   transition: 0.6s;
 }
 
@@ -267,6 +265,9 @@ nav ul li {
 .post__comment form {
   width: 100%;
   margin-left: 15px;
+}
+.post__comment form label {
+  display: none;
 }
 .post__comment form input[type=text] {
   display: flex;
@@ -394,6 +395,9 @@ nav ul li {
   margin: 10px;
   width: 100%;
 }
+.post-container__form label {
+  display: none;
+}
 .post-container__form--card {
   display: flex;
   justify-content: center;
@@ -473,6 +477,9 @@ nav ul li {
   align-items: flex-end;
   width: 100%;
 }
+.comment-container__item--updateForm form label {
+  display: none;
+}
 .comment-container__item--updateForm form input[type=text] {
   min-height: 100px;
   border-radius: 15px;
@@ -491,6 +498,9 @@ nav ul li {
   flex-direction: column;
   align-items: flex-end;
   width: 100%;
+}
+.comment-container__item--commentForm label {
+  display: none;
 }
 .comment-container__item--commentForm input[type=text] {
   min-height: 100px;

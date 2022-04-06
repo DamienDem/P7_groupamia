@@ -4,9 +4,8 @@ const { User } = require("../db/sequelize");
 module.exports = (req, res, next) => {
   try {
     const token = req.cookies.jwt;
-
     if (token) {
-      const decodedToken = jwt.verify(token, `Mon_token_secret`);
+      const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
       const userId = decodedToken.id;
       if (userId) {
         User.findOne({ where: { id: userId } })

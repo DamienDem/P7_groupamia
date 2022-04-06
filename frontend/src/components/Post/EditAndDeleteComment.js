@@ -1,6 +1,4 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { EditOutlined } from "@ant-design/icons";
 import { updateComment } from "../services/comment";
 
 const EditAndDeleteComment = ({ userId, comment, getAllComments, edit, setEdit }) => {
@@ -21,15 +19,18 @@ const EditAndDeleteComment = ({ userId, comment, getAllComments, edit, setEdit }
     <div className="comment-container__item--text">
       {userId === comment.userId && edit && (
         <form action="" onSubmit={handleComment} className="edit-comment-form">
-          <label htmlFor="text" onClick={() => setEdit(!edit)}></label>
+          <label htmlFor="text" id="text" onClick={() => setEdit(!edit)}> Modifier texte</label>
           <br />
           <input
+          id="text"
             type="text"
             name="text"
             onChange={(e) => setText(e.target.value)}
             defaultValue={comment.content}
           />
+          <label id="submit"> Valider modification</label>
           <input
+            id="submit"
             className="button"
             type="submit"
             value="Valider modification"

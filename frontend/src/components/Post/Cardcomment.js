@@ -209,7 +209,9 @@ const CardComment = ({ post, usersData, isAdmin, userId }) => {
             onSubmit={handleComment}
             className="comment-container__item--commentForm"
           >
+            <label id="text" htmlFor="text"> texte</label>
             <input
+              id="text"
               type="text"
               name="text"
               onChange={(e) => setText(e.target.value)}

@@ -48,6 +48,9 @@
         flex-direction: column;
         align-items: flex-end;
         width: 100%;
+        & label { 
+          display:none
+      }
         & input[type="text"] {
           min-height: 100px;
           border-radius: $boderRadius;
@@ -68,6 +71,9 @@
         flex-direction: column;
         align-items: flex-end;
         width: 100%;
+        & label { 
+          display:none
+      }
         & input[type="text"] {
             min-height: 100px;
             border-radius: $boderRadius;

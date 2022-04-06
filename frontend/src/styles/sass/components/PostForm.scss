@@ -16,6 +16,9 @@
     &__form {
         margin: 10px;
         width: 100%;
+        & label { 
+            display:none
+        }
         &--card {
             display: flex;
             justify-content: center;

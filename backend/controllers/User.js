@@ -67,7 +67,7 @@ exports.login = (req, res) => {
         }
         const token = jwt.sign(
           { id: user.id, isAdmin: user.isAdmin },
-          `Mon_token_secret`,
+          `${process.env.TOKEN_KEY}`,
           {
             expiresIn: "86400000",
           }
@@ -130,7 +130,7 @@ exports.getOneUser = (req, res) => {
 
 exports.updateProfil = (req, res) => {
   const token = req.cookies.jwt;
-  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
   const userId = decodedToken.id;
 
   const userObject = req.file
@@ -178,7 +178,7 @@ exports.updateProfil = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   const token = req.cookies.jwt;
-  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
   const userId = decodedToken.id;
   const adminId = decodedToken.isAdmin;
 
@@ -224,7 +224,7 @@ exports.deleteUser = (req, res) => {
 
 exports.authentification = (req, res) => {
   const token = req.cookies.jwt;
-  const decodedToken = jwt.verify(token, `Mon_token_secret`);
+  const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
   const userId = decodedToken.id;
   const userAdmin = decodedToken.isAdmin;
 

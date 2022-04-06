@@ -4,14 +4,15 @@ import { PictureOutlined } from "@ant-design/icons";
 import { getUser } from "../services/User";
 import { addPost } from "../services/Post";
 
-const PostForm = ({ getAllPosts, userId}) => {
+const PostForm = ({ getAllPosts, userId }) => {
   const [message, setMessage] = useState("");
   const [postPicture, setPostPicture] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [userPicture, setUserPicture] = useState(null)
   const [image, setImage] = useState();
 
   useEffect(() => {
-    getUser(setUserData, userId);
+    getUser(setUserData,setUserPicture, userId);
   }, [userId]);
 
   const handlePost = async () => {
@@ -40,17 +41,21 @@ const PostForm = ({ getAllPosts, userId}) => {
   return (
     <div className="post-container">
       <>
-      <Link to={"/profil"} state={{ id: userId }}>
+        <Link to={"/profil"} state={{ id: userId }}>
           <div className="post-container--user">
             <img
               className="profilPicture"
               src={userData.picture}
               alt="user-img"
             />
-            <h3> {userData.firstName}{" "}{userData.name} </h3>
+            <h3>
+              {" "}
+              {userData.firstName} {userData.name}{" "}
+            </h3>
           </div>
         </Link>
         <div className="post-container__form">
+        <label htmlFor="message"> message</label>
           <textarea
             name="content"
             id="message"
@@ -68,20 +73,26 @@ const PostForm = ({ getAllPosts, userId}) => {
             </li>
           ) : null}
           <div className="post-container__form__footer">
-            <div >
-                <PictureOutlined />
-                <input
-                  type="file"
-                  name="image"
-                  accept=".jpg, .jpeg, .png"
-                  onChange={(e) => handlePicture(e)}
-                /> 
+            <div>
+              <PictureOutlined />
+              <label htmlFor="image"> image </label>
+              <input
+                id="image"
+                type="file"
+                name="image"
+                accept=".jpg, .jpeg, .png"
+                onChange={(e) => handlePicture(e)}
+              />
             </div>
             <div className="post-container__form__footer--button">
               {message || postPicture ? (
-                <button className="button" onClick={cancelPost}>Annuler message</button>
+                <button className="button" onClick={cancelPost}>
+                  Annuler message
+                </button>
               ) : null}
-              <button className="button" onClick={handlePost}>Envoyer</button>
+              <button className="button" onClick={handlePost}>
+                Envoyer
+              </button>
             </div>
           </div>
         </div>

@@ -15,7 +15,7 @@ export const updateComment = async (commentId, data, getAllComments) => {
     });
 };
 
-export const deleteComment = async (commentId, getAllComments) => {
+export const deleteComment = async (commentId) => {
   await axios({
     method: "delete",
     url: `${process.env.REACT_APP_API_URL}deleteComment/` + commentId,

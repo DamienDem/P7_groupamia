@@ -81,6 +81,9 @@
         & form {
             width: 100%;
             margin-left: 15px;
+            & label { 
+              display:none
+          }
             & input[type="text"] {
                 display: flex;
                 padding: 5px;

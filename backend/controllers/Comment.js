@@ -145,7 +145,7 @@ exports.getAllComments = (req, res) => {
 };
 
 exports.getOneComment = (req, res) => {
-  Post.findOne({
+  Comment.findOne({
     where: { id: req.params.id },
   }).then((comment) => {
     if (comment === null) {
