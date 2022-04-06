@@ -192,6 +192,9 @@ nav ul li {
   background: #ffffff;
   box-shadow: 0 0 15px #00000050;
 }
+.post__container--update label {
+  display: none;
+}
 .post__container__owner {
   display: flex;
   flex-wrap: wrap;

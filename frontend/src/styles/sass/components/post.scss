@@ -9,6 +9,11 @@
       margin: 30px 10px;
       background: $color4;
       @include shadow;
+      &--update {
+        & label {
+          display: none;
+        }
+      }
       &__owner {
           display: flex;
           flex-wrap: wrap; 
