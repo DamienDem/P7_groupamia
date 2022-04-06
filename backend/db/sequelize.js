@@ -3,9 +3,10 @@ const UserModel = require('../models/User');
 const PostModel = require('../models/Post');
 const LikeModel = require ('../models/Like');
 const CommentModel = require('../models/Comment');
+require('dotenv').config();
 
-const sequelize = new Sequelize('groupomania', 'root', '', {
-  // enter your database id here
+
+const sequelize = new Sequelize(`${process.env.DB_NAME}`, `${process.env.DB_USER}`, `${process.env.DB_PASSWORD}`, {
     host: 'localhost',
     dialect: 'mariadb',
     dialectOptions: {

@@ -8,7 +8,6 @@ import PageNotFound from "./pages/Page-not-found";
 function App() {
   return (
     <Router>
-     
         <div>
           <Routes>
             <Route exact= 'true' path="/" element={<Auth />} />
