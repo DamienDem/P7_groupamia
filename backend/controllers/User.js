@@ -147,20 +147,10 @@ exports.updateProfil = (req, res) => {
       const message = "L'utilisateur demandé n'existe pas .";
       return res.status(404).json({ message });
     }
-    if (
-      user.picture === `http://localhost:3000/images/default_profil_picture.jpg`
-    ) {
-      user
-        .update(userObject, {
-          where: { id: userId },
-        })
-        .catch((err) => {
-          const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
-          res.status(500).json({ message, err });
-        });
-    } else {
-      const filename = user.picture.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => {
+    if(user.id == userId){
+      if (
+        user.picture === `http://localhost:3000/images/default_profil_picture.jpg`
+      ) {
         user
           .update(userObject, {
             where: { id: userId },
@@ -169,11 +159,23 @@ exports.updateProfil = (req, res) => {
             const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
             res.status(500).json({ message, err });
           });
-      });
+      } else {
+        const filename = user.picture.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+          user
+            .update(userObject, {
+              where: { id: userId },
+            })
+            .catch((err) => {
+              const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
+              res.status(500).json({ message, err });
+            });
+        });
+      }
+      const message = `L'utilisateur ${user.name} ${user.firstName} a bien été modifié`;
+      res.json({ message, data: userObject });
     }
-    const message = `L'utilisateur ${user.name} ${user.firstName} a bien été modifié`;
-    res.json({ message, data: userObject });
-  });
+    })
 };
 
 exports.deleteUser = (req, res) => {
@@ -182,28 +184,16 @@ exports.deleteUser = (req, res) => {
   const userId = decodedToken.id;
   const adminId = decodedToken.isAdmin;
 
-  if (userId == req.params.id || adminId == true) {
     User.findByPk(req.params.id).then((user) => {
       if (!user) {
         const message = "L'utilisateur demandé n'existe pas .";
         return res.status(404).json({ message });
       }
-      if (
-        user.picture ===
-        `http://localhost:3000/images/default_profil_picture.jpg`
-      ) {
-        User.destroy({ where: { id: user.id } })
-          .then((_) => {
-            const message = `L'utilisateur ${user.name} ${user.firstName} a bien été supprimé .`;
-            res.json({ message, data: user });
-          })
-          .catch((err) => {
-            const message = `Impossible de supprimer le profil, veuillez réessayer ultérieurement. `;
-            res.status(500).json({ message, err });
-          });
-      } else {
-        const filename = user.picture.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
+      if(user.id === userId || adminId) {
+        if (
+          user.picture ===
+          `http://localhost:3000/images/default_profil_picture.jpg`
+        ) {
           User.destroy({ where: { id: user.id } })
             .then((_) => {
               const message = `L'utilisateur ${user.name} ${user.firstName} a bien été supprimé .`;
@@ -213,13 +203,26 @@ exports.deleteUser = (req, res) => {
               const message = `Impossible de supprimer le profil, veuillez réessayer ultérieurement. `;
               res.status(500).json({ message, err });
             });
-        });
-      }
-    });
+        } else {
+          const filename = user.picture.split("/images/")[1];
+          fs.unlink(`images/${filename}`, () => {
+            User.destroy({ where: { id: user.id } })
+              .then((_) => {
+                const message = `L'utilisateur ${user.name} ${user.firstName} a bien été supprimé .`;
+                res.json({ message, data: user });
+              })
+              .catch((err) => {
+                const message = `Impossible de supprimer le profil, veuillez réessayer ultérieurement. `;
+                res.status(500).json({ message, err });
+              });
+          });
+        }
+
   } else {
     const message = `Vous n'êtes pas autorisés à faire cette action`;
     res.status(401).json({ message });
   }
+})
 };
 
 exports.authentification = (req, res) => {
