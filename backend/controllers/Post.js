@@ -87,28 +87,33 @@ exports.updatePost = (req, res) => {
             const message = `La publication demandé n'existe pas .`;
             return res.status(404).json({ message });
           }
-          if (post.attachement) {
-            const filename = post.attachement.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => {
+          if(post.userId === userId) {
+            if (post.attachement) {
+              const filename = post.attachement.split("/images/")[1];
+              fs.unlink(`images/${filename}`, () => {
+                post.update(postObject, {
+                  where: { id: req.params.id },
+                })
+                .then(() => {
+                  const message = `La publication :"${post.title}" a bien été modifié.`;
+                  res.json({ message, data: postObject });
+                })
+              });
+            } else {
               post.update(postObject, {
                 where: { id: req.params.id },
-              });
-              const message = `La publication :"${post.title}" a bien été modifié.`;
-              res.json({ message, data: postObject });
-            });
+              })
+              .then(() => {
+                const message = `La publication :"${post.title}" a bien été modifié.`;
+                res.json({ message, data: postObject });
+              }) 
+            }
           } else {
-            post.update(postObject, {
-              where: { id: req.params.id },
-            });
-            const message = `La publication :"${post.title}" a bien été modifié.`;
-            res.json({ message, data: postObject });
+            const message = `Vous n'êtes pas autorisés à faire cette action`;
+            res.status(401).json({ message });
           }
-        });
+        })
       }
-    })
-    .catch((err) => {
-      const message = `Impossible de modifier le profil, veuillez réessayer ultérieurement. `;
-      res.status(500).json({ message, err });
     });
 };
 
@@ -192,6 +197,9 @@ exports.deletePost = (req, res) => {
             res.status(500).json({ message, data: error });
           });
       }
+    } else {
+      const message = `Vous n'êtes pas autorisés à faire cette action`;
+      res.status(401).json({ message });
     }
   });
 };
