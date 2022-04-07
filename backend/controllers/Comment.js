@@ -66,12 +66,22 @@ exports.updateComment = (req, res) => {
               const message = `La publication demandé n'existe pas .`;
               return res.status(404).json({ message });
             }
-             else 
+            if (comment.userId === userId) {
               Comment.update(req.body, {
                 where: { id: req.params.id },
-              });
-              const message = `La publication a bien été modifié.`;
-              res.json({ message, data: req.body });
+              })
+              .then((comment) => {
+                const message = `La publication ${comment.id} a bien été modifié.`;
+                res.json({ message, data: req.body });
+              })
+              .catch((err) => {
+                const message = `La publication n'existe pas`
+                res.status(404).json({message, err})
+              })   
+            } else {
+              const message = `Vous n'avez pas les droits pour supprimer ce commentaire .`;
+              res.status(401).json({ message });
+          }
           })
           .catch((error) => {
             const message = `La publication n'a pas pu être modifié. Réessayez dans quelques instants.`;
@@ -104,15 +114,19 @@ exports.deleteComment = (req, res) => {
           const message = `Le commentaire demandé n'existe pas`;
           return res.status(400).json({ message });
         } 
-        Post.findOne({
-          where: {id: comment.postId}
-        })
-        .then((post) => {
-          if (post){
-            post.update({comments: post.comments -1})
-          }
-        })
           if (userId == comment.userId || isAdmin) {
+            Post.findOne({
+              where: {id: comment.postId}
+            })
+            .then((post) => {
+              if (post){
+                post.update({comments: post.comments -1})
+              }
+            })
+            .catch((err) => {
+              const message = "Le poste n'existe pas"
+              res.status(404).json({message, err})
+            })
               const commentDeleted = comment;
               return Comment.destroy({
                 where: { id: comment.id },
