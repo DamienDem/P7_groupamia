@@ -1,6 +1,6 @@
 # Openclassrooms p7
 
-Creation of a enterprise social network for Groupomania
+Creation of a enterprise's social network for Groupomania
 
 ## Technologys:
 
@@ -8,7 +8,7 @@ MariaDB - Sequelize - NodeJS - Express - ReactJS - Sass/Css
 
 ## Fisrt: 
 
-Clone this repo
+Clone this repository
 
 ## Backend installation:
 
@@ -27,18 +27,10 @@ Clone this repo
 
 ### In backend/db/sequelize:
 
- Enter your database ID line 8
+ Enter your database ID in .env folder
 
-```
+ You have an admin user in file users(1)
 
-const sequelize = new Sequelize('groupomania', 'root', '', {
-    host: 'localhost',
-    dialect: 'mariadb',
-    dialectOptions: {
-      timezone: 'Etc/GMT-2',
-    },
-    logging: false
-  })
-
-```
+ email : admin@groupomania.fr
+ password : monMDP#13
 
