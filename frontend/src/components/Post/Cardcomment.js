@@ -80,16 +80,18 @@ const CardComment = ({ post, usersData, isAdmin, userId }) => {
   const handleComment = async (e) => {
     e.preventDefault();
     if (text) {
-      addComment(post.id, text);
-
-      setNumberOfComments(numberOfComments + 1);
-      setText("");
+      addComment(post.id, text)
+      .then(() => {
+        setNumberOfComments(numberOfComments + 1)
+        setText("")
+      }) 
     }
   };
 
   const handleDeleteComment = async (commentId) => {
-    deleteComment(commentId, text);
-    setNumberOfComments(numberOfComments - 1);
+    deleteComment(commentId, text)
+    .then(_ => {
+      setNumberOfComments(numberOfComments - 1)})
   };
 
   return (
@@ -180,7 +182,6 @@ const CardComment = ({ post, usersData, isAdmin, userId }) => {
                               )
                             ) {
                               handleDeleteComment(comment.id);
-                              setNumberOfComments(numberOfComments - 1);
                             }
                           }}
                         >
