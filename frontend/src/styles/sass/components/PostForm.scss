@@ -29,6 +29,8 @@
             & img {
                 width: 100%;
                 padding: 10px;
+                max-width: 600px;
+                max-height: 600px;
             }
         }
         &__footer {

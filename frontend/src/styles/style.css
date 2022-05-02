@@ -412,6 +412,8 @@ nav ul li {
 .post-container__form--card img {
   width: 100%;
   padding: 10px;
+  max-width: 600px;
+  max-height: 600px;
 }
 .post-container__form__footer {
   display: flex;

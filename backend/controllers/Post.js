@@ -150,7 +150,7 @@ exports.deletePost = (req, res) => {
             })
             .catch((err) => {
               const message = "Impossible de supprimer les messages";
-              res.status(400).json({ message }, err);
+              res.status(400).json({ message , err});
             });
           Post.destroy({
             where: { id: req.params.id },
