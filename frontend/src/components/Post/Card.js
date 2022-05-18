@@ -9,7 +9,7 @@ import {
   PictureOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import CardComment from "./CardComment";
+import CardComment from "./Cardcomment";
 
 const Card = ({ post, getAllPosts, isAdmin, userId }) => {
   const [isLoading, setIsLoading] = useState(true);
